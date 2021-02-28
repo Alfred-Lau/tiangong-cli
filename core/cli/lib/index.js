@@ -11,6 +11,7 @@ function core(argv) {
   try {
     checkPkgVersion();
     checkNodeVersion();
+    checkRoot();
   } catch (error) {
     // 隐藏堆栈信息，自定义
     log.error(error.message);
@@ -33,4 +34,9 @@ function checkNodeVersion() {
   } else {
     log.success(colors.green(`当前 Node 版本: ${currentNodeVersion}`));
   }
+}
+
+function checkRoot() {
+  const rootCheck = require('root-check');
+  rootCheck();
 }
