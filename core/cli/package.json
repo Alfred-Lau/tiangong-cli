@@ -43,6 +43,7 @@
     "node": "v15.0.0"
   },
   "devDependencies": {
+    "@types/minimist": "^1.2.1",
     "@types/path-exists": "^4.0.2",
     "@types/user-home": "^2.0.0"
   }

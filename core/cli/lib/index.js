@@ -7,7 +7,10 @@ const colors = require("colors/safe");
 const userHome = require("user-home");
 const exists = require("path-exists");
 const log = require("@lerna-usage/log");
+const minimist = require("minimist");
 const pkg = require("../package.json");
+
+let args = process.argv.slice(2);
 
 // 版本号检查功能
 function checkPkgVersion() {
@@ -34,7 +37,7 @@ function checkRoot() {
 }
 
 /**
- *接茬用户主目录是否存在
+ *检查用户主目录是否存在
  *
  */
 function checkUserHome() {
@@ -45,12 +48,30 @@ function checkUserHome() {
   }
 }
 
+/**
+ *检查输入参数
+ *
+ */
+function checkUserInputArgs() {
+  args = minimist(args);
+  if (args.debug) {
+    process.env.LOG_LEVEL = "verbose";
+  } else {
+    process.env.LOG_LEVEL = "info";
+  }
+
+  log.level = process.env.LOG_LEVEL;
+}
+
 function core(argv) {
   try {
     checkPkgVersion();
     checkNodeVersion();
     checkRoot();
     checkUserHome();
+    checkUserInputArgs();
+    // tg-cli --debug 生效
+    log.verbose("debug", "test debug log");
   } catch (error) {
     // 隐藏堆栈信息，自定义
     log.error(error.message);

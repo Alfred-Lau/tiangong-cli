@@ -31,5 +31,8 @@
   },
   "dependencies": {
     "npmlog": "^4.1.2"
+  },
+  "devDependencies": {
+    "@types/npmlog": "^4.1.2"
   }
 }
