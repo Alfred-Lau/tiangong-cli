@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports = core;
+module.exports = cli;
 
 const semver = require("semver");
 const colors = require("colors/safe");
@@ -49,7 +49,7 @@ function checkUserHome() {
 }
 
 /**
- *检查输入参数
+ *检查输入参数, 添加debug 模式
  *
  */
 function checkUserInputArgs() {
@@ -63,7 +63,7 @@ function checkUserInputArgs() {
   log.level = process.env.LOG_LEVEL;
 }
 
-function core(argv) {
+function cli(argv) {
   try {
     checkPkgVersion();
     checkNodeVersion();
