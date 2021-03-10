@@ -8,6 +8,7 @@ const colors = require("colors/safe");
 const userHome = require("user-home");
 const exists = require("path-exists");
 const log = require("@lerna-usage/log");
+const { getNpmInfo } = require("@lerna-usage/get-npm-info");
 const minimist = require("minimist");
 const pkg = require("../package.json");
 
@@ -94,7 +95,19 @@ function creatDefaultEnvConfig() {
   process.env.CLI_HOME_PATH = cliConfig.cliHome;
 }
 
-function cli(argv) {
+/**
+ *检查最新版本
+ *
+ */
+async function checkLatestVersion() {
+  const currentVersion = pkg.version;
+  const name = pkg.name;
+
+  const info = await getNpmInfo(name);
+  log.verbose("远程 npm 信息", currentVersion, info);
+}
+
+async function cli(argv) {
   try {
     checkPkgVersion();
     checkNodeVersion();
@@ -102,6 +115,7 @@ function cli(argv) {
     checkUserHome();
     checkUserInputArgs();
     checkDefaultEnv();
+    await checkLatestVersion();
     // tg-cli --debug 生效
   } catch (error) {
     // 隐藏堆栈信息，自定义

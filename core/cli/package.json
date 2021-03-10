@@ -30,6 +30,7 @@
     "url": "https://github.com/Alfred-Lau/tiangong-cli/issues"
   },
   "dependencies": {
+    "@lerna-usage/get-npm-info": "file:../../utils/get-npm-info",
     "@lerna-usage/log": "file:../../utils/log",
     "colors": "^1.4.0",
     "dotenv": "^8.2.0",
