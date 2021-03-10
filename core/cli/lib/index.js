@@ -2,6 +2,7 @@
 
 module.exports = cli;
 
+const path = require("path");
 const semver = require("semver");
 const colors = require("colors/safe");
 const userHome = require("user-home");
@@ -63,6 +64,36 @@ function checkUserInputArgs() {
   log.level = process.env.LOG_LEVEL;
 }
 
+function checkDefaultEnv() {
+  const DefaultEnvConfigPath = path.resolve(userHome, ".env");
+  let env;
+
+  if (exists(DefaultEnvConfigPath)) {
+    // 完成 env 数据的加载
+    env = require("dotenv").config({
+      path: DefaultEnvConfigPath,
+    });
+  }
+  creatDefaultEnvConfig();
+  // 后面直接使用这个就可以
+  log.verbose("当前环境变量配置: ", process.env.CLI_HOME_PATH);
+}
+
+function creatDefaultEnvConfig() {
+  const cliConfig = {
+    userHome,
+  };
+
+  if (process.env.CLI_HOME) {
+    cliConfig["cliHome"] = path.join(userHome, process.env.CLI_HOME);
+  } else {
+    cliConfig["cliHome"] = path.join(userHome, ".tg_cli");
+  }
+
+  // 最终完成重新赋值
+  process.env.CLI_HOME_PATH = cliConfig.cliHome;
+}
+
 function cli(argv) {
   try {
     checkPkgVersion();
@@ -70,8 +101,8 @@ function cli(argv) {
     checkRoot();
     checkUserHome();
     checkUserInputArgs();
+    checkDefaultEnv();
     // tg-cli --debug 生效
-    log.verbose("debug", "test debug log");
   } catch (error) {
     // 隐藏堆栈信息，自定义
     log.error(error.message);
