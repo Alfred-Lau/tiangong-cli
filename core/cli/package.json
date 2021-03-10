@@ -34,10 +34,16 @@
     "colors": "^1.4.0",
     "import-local": "^3.0.2",
     "npmlog": "^4.1.2",
+    "path-exists": "^4.0.0",
     "root-check": "^1.0.0",
-    "semver": "^7.3.4"
+    "semver": "^7.3.4",
+    "user-home": "^2.0.0"
   },
   "engines": {
     "node": "v15.0.0"
+  },
+  "devDependencies": {
+    "@types/path-exists": "^4.0.2",
+    "@types/user-home": "^2.0.0"
   }
 }

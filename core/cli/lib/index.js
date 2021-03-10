@@ -1,22 +1,14 @@
-'use strict';
+"use strict";
 
 module.exports = core;
 
-const semver = require('semver');
-const colors = require('colors/safe');
-const log = require('@lerna-usage/log');
-const pkg = require('../package.json');
+const semver = require("semver");
+const colors = require("colors/safe");
+const userHome = require("user-home");
+const exists = require("path-exists");
+const log = require("@lerna-usage/log");
+const pkg = require("../package.json");
 
-function core(argv) {
-  try {
-    checkPkgVersion();
-    checkNodeVersion();
-    checkRoot();
-  } catch (error) {
-    // 隐藏堆栈信息，自定义
-    log.error(error.message);
-  }
-}
 // 版本号检查功能
 function checkPkgVersion() {
   log.info(pkg.version);
@@ -37,6 +29,30 @@ function checkNodeVersion() {
 }
 
 function checkRoot() {
-  const rootCheck = require('root-check');
+  const rootCheck = require("root-check");
   rootCheck();
+}
+
+/**
+ *接茬用户主目录是否存在
+ *
+ */
+function checkUserHome() {
+  if (!userHome || !exists(userHome)) {
+    throw new Error(colors.red("当前用户的主目录不存在"));
+  } else {
+    log.info(`当前用户主目录为 ${userHome}`);
+  }
+}
+
+function core(argv) {
+  try {
+    checkPkgVersion();
+    checkNodeVersion();
+    checkRoot();
+    checkUserHome();
+  } catch (error) {
+    // 隐藏堆栈信息，自定义
+    log.error(error.message);
+  }
 }
