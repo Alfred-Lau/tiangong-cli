@@ -42,7 +42,7 @@
     "user-home": "^2.0.0"
   },
   "engines": {
-    "node": "v15.0.0"
+    "node": "v14.0.0"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",

@@ -8,7 +8,7 @@ const colors = require("colors/safe");
 const userHome = require("user-home");
 const exists = require("path-exists");
 const log = require("@lerna-usage/log");
-const { getNpmInfo } = require("@lerna-usage/get-npm-info");
+const { getLatestVersion } = require("@lerna-usage/get-npm-info");
 const minimist = require("minimist");
 const pkg = require("../package.json");
 
@@ -16,7 +16,7 @@ let args = process.argv.slice(2);
 
 // 版本号检查功能
 function checkPkgVersion() {
-  log.info(pkg.version);
+  log.info("当前软件版本", pkg.version);
 }
 
 // 最低 node 版本兼容性检查
@@ -29,7 +29,7 @@ function checkNodeVersion() {
   if (semver.lt(currentNodeVersion, lastNodeVersion)) {
     throw new Error(colors.red(`node 版本必须高于 ${lastNodeVersion}`));
   } else {
-    log.success(colors.green(`当前 Node 版本: ${currentNodeVersion}`));
+    log.info("检查当前 Node 版本", colors.green(`${currentNodeVersion}`));
   }
 }
 
@@ -46,7 +46,7 @@ function checkUserHome() {
   if (!userHome || !exists(userHome)) {
     throw new Error(colors.red("当前用户的主目录不存在"));
   } else {
-    log.info(`当前用户主目录为 ${userHome}`);
+    log.info("检查用户主目录", ` ${userHome}`);
   }
 }
 
@@ -101,10 +101,18 @@ function creatDefaultEnvConfig() {
  */
 async function checkLatestVersion() {
   const currentVersion = pkg.version;
-  const name = pkg.name;
+  // const name = pkg.name;
+  const name = "colors";
 
-  const info = await getNpmInfo(name);
-  log.verbose("远程 npm 信息", currentVersion, info);
+  const latestVersion = await getLatestVersion(name, currentVersion);
+  if (semver.gt(latestVersion, currentVersion)) {
+    log.info(
+      "检查最新版本",
+      `当前版本 ${currentVersion} 不是最新版本，请运行 ${colors.yellow(
+        `npm i -g ${name} `
+      )} 进行安装`
+    );
+  }
 }
 
 async function cli(argv) {
