@@ -9,6 +9,7 @@ const userHome = require("user-home");
 const exists = require("path-exists").sync;
 const commander = require("commander");
 const log = require("@lerna-usage/log");
+const exec = require("@lerna-usage/exec");
 const { getLatestVersion } = require("@lerna-usage/get-npm-info");
 
 const pkg = require("../package.json");
@@ -113,7 +114,7 @@ function registryCommand() {
   program
     .command("init [name]")
     .option("-f, --force", "是否强制初始化项目")
-    .action(require("@lerna-usage/exec"));
+    .action(exec);
 
   // second 设置事件监听
   program.on("option:debug", function () {
@@ -168,6 +169,7 @@ async function prepare() {
 
 async function cli(argv) {
   try {
+    await prepare();
     //  完成命令注册
     registryCommand();
   } catch (error) {

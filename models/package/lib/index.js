@@ -1,7 +1,9 @@
 "use strict";
 
-module.exports = package;
-
-function package() {
-  // TODO
+class Package {
+  constructor() {
+    console.log("package construct");
+  }
 }
+
+module.exports = Package;
