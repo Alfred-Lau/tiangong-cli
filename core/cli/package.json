@@ -33,6 +33,7 @@
     "@lerna-usage/get-npm-info": "file:../../utils/get-npm-info",
     "@lerna-usage/log": "file:../../utils/log",
     "colors": "^1.4.0",
+    "commander": "^7.1.0",
     "dotenv": "^8.2.0",
     "import-local": "^3.0.2",
     "npmlog": "^4.1.2",
@@ -45,6 +46,7 @@
     "node": "v14.0.0"
   },
   "devDependencies": {
+    "@types/commander": "^2.12.2",
     "@types/dotenv": "^8.2.0",
     "@types/minimist": "^1.2.1",
     "@types/path-exists": "^4.0.2",
