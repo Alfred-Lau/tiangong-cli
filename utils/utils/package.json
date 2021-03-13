@@ -1,12 +1,12 @@
 {
-  "name": "@lerna-usage/package",
+  "name": "@lerna-usage/utils",
   "version": "0.0.0",
-  "description": "package instance",
+  "description": "utils",
   "keywords": [
-    "package"
+    "utils"
   ],
   "author": "Alfred-Lau <jian.liu@icloud.com>",
-  "homepage": "https://github.com/Alfred-Lau/tiangong-cli/tree/master/models/package#readme",
+  "homepage": "https://github.com/Alfred-Lau/tiangong-cli/tree/master/utils/utils#readme",
   "license": "ISC",
   "main": "lib/index.js",
   "directories": {
@@ -22,9 +22,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Alfred-Lau/tiangong-cli.git"
-  },
-  "dependencies": {
-    "@lerna-usage/utils": "file:../../utils/utils"
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1"
