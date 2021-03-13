@@ -113,9 +113,7 @@ function registryCommand() {
   program
     .command("init [name]")
     .option("-f, --force", "是否强制初始化项目")
-    .action((projectName, cmdObj) => {
-      require("@lerna-usage/init")(projectName, cmdObj);
-    });
+    .action(require("@lerna-usage/exec"));
 
   // second 设置事件监听
   program.on("option:debug", function () {
