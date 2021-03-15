@@ -25,7 +25,9 @@
   },
   "dependencies": {
     "@tiangongkit/format-path": "file:../../utils/format-path",
-    "@tiangongkit/utils": "file:../../utils/utils"
+    "@tiangongkit/get-npm-info": "file:../../utils/get-npm-info",
+    "@tiangongkit/utils": "file:../../utils/utils",
+    "npminstall": "^4.10.0"
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1"

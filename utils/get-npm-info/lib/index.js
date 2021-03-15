@@ -1,6 +1,11 @@
 "use strict";
 
-module.exports = { getNpmInfo, getSemverVersions, getLatestVersion };
+module.exports = {
+  getNpmInfo,
+  getSemverVersions,
+  getLatestVersion,
+  getDefaultRegistry,
+};
 
 const axios = require("axios");
 const urlJoin = require("url-join");

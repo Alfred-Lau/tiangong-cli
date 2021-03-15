@@ -3,7 +3,10 @@
 const path = require("path");
 const { isObject } = require("@tiangongkit/utils");
 const formatPath = require("@tiangongkit/format-path");
+const { getDefaultRegistry } = require("@tiangongkit/get-npm-info");
 const pkgDir = require("pkg-dir").sync;
+const npminstall = require("npminstall");
+
 class Package {
   constructor(options) {
     if (!options) {
@@ -16,11 +19,19 @@ class Package {
     this.version = options.version;
     // package 的路径
     this.targetPath = options.targetPath;
+    this.storeDir = options.storeDir;
   }
   // 判断当前 package 是否存在
   exists() {}
   // 安装
-  install() {}
+  async install() {
+    await npminstall({
+      root: this.targetPath,
+      storeDir: this.storeDir,
+      registry: getDefaultRegistry(),
+      pkgs: [{ name: this.packageName, version: this.version }],
+    });
+  }
   // 更新
   update() {}
   // 获取入口文件的路径
