@@ -12,21 +12,26 @@ const SETTINGS = {
 
 function exec() {
   // 1， 拿到 targetPath ,转化为 modulePath
-  const targetPath = process.env.CLI_TARGET_PATH;
-  const storePath = process.env.CLI_HOME_PATH;
+  let targetPath = process.env.CLI_TARGET_PATH;
   // 2. 实例化 Package 类
 
   const version = "latest";
   const name = SETTINGS[arguments[arguments.length - 1].name()];
 
+  if (!targetPath) {
+    // 生成缓存路径
+    targetPath = "";
+  }
+
   const opts = {
     targetPath,
-    storePath,
     name,
     version,
   };
 
   const pkg = new Package(opts);
+  const entryFilePath = pkg.getEntryFilePath();
+  console.log("entryFilePath", entryFilePath);
 
   // 3. 获取入口文件  Package.getRootFile
   // 4. 封装其他方法 到  Package 类上面

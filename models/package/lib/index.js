@@ -1,8 +1,10 @@
 "use strict";
+
+const path = require("path");
 const { isObject } = require("@tiangongkit/utils");
+const pkgDir = require("pkg-dir").sync;
 class Package {
   constructor(options) {
-    console.log(options);
     if (!options) {
       throw new Error("Package 类的 options 参数不能为空");
     }
@@ -13,7 +15,6 @@ class Package {
     this.version = options.version;
     // package 的路径
     this.targetPath = options.targetPath;
-    this.storePath = options.storePath;
   }
   // 判断当前 package 是否存在
   exists() {}
@@ -23,7 +24,22 @@ class Package {
   update() {}
   // 获取入口文件的路径
   getEntryFilePath() {
-    //1.  获取package.json所在目录 pkg-dir
+    // 1.  获取package.json所在目录 pkg-dir
+    const rootPath = pkgDir(this.targetPath);
+    // 2. 读取 package.json
+    if (rootPath) {
+      const pkg = require(path.resolve(rootPath, "package.json"));
+      // 3. 找到 main/lib path
+      let indexPath;
+      if (pkg && (pkg.main || pkg.lib)) {
+        return path.resolve(rootPath, `${pkg.main}`);
+      } else {
+        return path.resolve(rootPath, "index.js");
+      }
+      // 4. 路径的兼容
+    } else {
+      return null;
+    }
   }
 }
 
