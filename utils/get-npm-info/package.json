@@ -1,5 +1,5 @@
 {
-  "name": "@lerna-usage/get-npm-info",
+  "name": "@tiangongkit/get-npm-info",
   "version": "0.0.0",
   "description": "get npm info",
   "keywords": [

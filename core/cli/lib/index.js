@@ -8,9 +8,9 @@ const colors = require("colors/safe");
 const userHome = require("user-home");
 const exists = require("path-exists").sync;
 const commander = require("commander");
-const log = require("@lerna-usage/log");
-const exec = require("@lerna-usage/exec");
-const { getLatestVersion } = require("@lerna-usage/get-npm-info");
+const log = require("@tiangongkit/log");
+const exec = require("@tiangongkit/exec");
+const { getLatestVersion } = require("@tiangongkit/get-npm-info");
 
 const pkg = require("../package.json");
 

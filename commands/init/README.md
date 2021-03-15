@@ -1,11 +1,11 @@
-# `@lerna-usage/init`
+# `@tiangongkit/init`
 
 > TODO: description
 
 ## Usage
 
 ```
-const init = require('@lerna-usage/init');
+const init = require('@tiangongkit/init');
 
 // TODO: DEMONSTRATE API
 ```

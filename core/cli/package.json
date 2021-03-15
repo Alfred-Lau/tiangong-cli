@@ -1,5 +1,5 @@
 {
-  "name": "@lerna-usage/cli",
+  "name": "@tiangongkit/cli",
   "version": "0.0.0",
   "description": "cli",
   "author": "Alfred-Lau <jian.liu@icloud.com>",
@@ -30,10 +30,10 @@
     "url": "https://github.com/Alfred-Lau/tiangong-cli/issues"
   },
   "dependencies": {
-    "@lerna-usage/exec": "file:../exec",
-    "@lerna-usage/get-npm-info": "file:../../utils/get-npm-info",
-    "@lerna-usage/init": "file:../../commands/init",
-    "@lerna-usage/log": "file:../../utils/log",
+    "@tiangongkit/exec": "file:../exec",
+    "@tiangongkit/get-npm-info": "file:../../utils/get-npm-info",
+    "@tiangongkit/init": "file:../../commands/init",
+    "@tiangongkit/log": "file:../../utils/log",
     "colors": "^1.4.0",
     "commander": "^7.1.0",
     "dotenv": "^8.2.0",

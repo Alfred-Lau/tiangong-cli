@@ -1,5 +1,5 @@
 "use strict";
-const { isObject } = require("@lerna-usage/utils");
+const { isObject } = require("@tiangongkit/utils");
 class Package {
   constructor(options) {
     if (!options) {

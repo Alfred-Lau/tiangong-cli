@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const cli = require('..');
+const cli = require("..");
 
-describe('@lerna-usage/cli', () => {
-    it('needs tests');
+describe("@tiangongkit/cli", () => {
+  it("needs tests");
 });

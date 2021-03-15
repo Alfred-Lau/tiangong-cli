@@ -1,5 +1,5 @@
 {
-  "name": "@lerna-usage/exec",
+  "name": "@tiangongkit/exec",
   "version": "0.0.0",
   "description": "tg-cli exec",
   "keywords": [
@@ -24,7 +24,7 @@
     "url": "git+https://github.com/Alfred-Lau/tiangong-cli.git"
   },
   "dependencies": {
-    "@lerna-usage/package": "file:../../models/package"
+    "@tiangongkit/package": "file:../../models/package"
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1"

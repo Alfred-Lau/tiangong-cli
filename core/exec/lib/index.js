@@ -1,6 +1,6 @@
 "use strict";
 
-const Package = require("@lerna-usage/package");
+const Package = require("@tiangongkit/package");
 
 function exec() {
   console.log("exec", process.env.CLI_TARGET_PATH);

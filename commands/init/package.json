@@ -1,5 +1,5 @@
 {
-  "name": "@lerna-usage/init",
+  "name": "@tiangongkit/init",
   "version": "0.0.0",
   "description": "tg-cli init command",
   "keywords": [
@@ -15,7 +15,7 @@
     "test": "__tests__"
   },
   "dependencies": {
-    "@lerna-usage/log": "file:../../utils/log"
+    "@tiangongkit/log": "file:../../utils/log"
   },
   "files": [
     "lib"

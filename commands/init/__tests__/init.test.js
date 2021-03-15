@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const init = require('..');
+const init = require("..");
 
-describe('@lerna-usage/init', () => {
-    it('needs tests');
+describe("@tiangongkit/init", () => {
+  it("needs tests");
 });
