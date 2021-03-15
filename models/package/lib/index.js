@@ -2,6 +2,7 @@
 
 const path = require("path");
 const { isObject } = require("@tiangongkit/utils");
+const formatPath = require("@tiangongkit/format-path");
 const pkgDir = require("pkg-dir").sync;
 class Package {
   constructor(options) {
@@ -30,13 +31,12 @@ class Package {
     if (rootPath) {
       const pkg = require(path.resolve(rootPath, "package.json"));
       // 3. 找到 main/lib path
-      let indexPath;
       if (pkg && (pkg.main || pkg.lib)) {
-        return path.resolve(rootPath, `${pkg.main}`);
+        // 4. 路径的兼容
+        return formatPath(path.resolve(rootPath, `${pkg.main}`));
       } else {
         return path.resolve(rootPath, "index.js");
       }
-      // 4. 路径的兼容
     } else {
       return null;
     }
