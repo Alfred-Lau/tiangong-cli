@@ -137,9 +137,9 @@ function registryCommand() {
   });
 
   // 未知命令的处理逻辑
-  program.on("command:*", function (unkonwnCommand) {
+  program.on("command:*", function (unknownCommand) {
     const availableCommands = program.commands.map((cmd) => cmd.name());
-    log.warn(colors.red(`${unkonwnCommand} 命令不存在`));
+    log.warn(colors.red(`${unknownCommand} 命令不存在`));
     program.outputHelp();
     if (availableCommands.length) {
       console.log(
@@ -147,12 +147,6 @@ function registryCommand() {
       );
     }
   });
-
-  // node exe.js xxx
-  if (process.argv.length < 3) {
-    program.outputHelp();
-    console.log();
-  }
 
   // last
   program.parse(process.argv);

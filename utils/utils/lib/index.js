@@ -4,7 +4,7 @@ function isObject(o) {
   if (!o) {
     return false;
   }
-  return Object.prototype.toString.call(o) === "object [Object]";
+  return Object.prototype.toString.call(o) === "[object Object]";
 }
 
 module.exports = {
