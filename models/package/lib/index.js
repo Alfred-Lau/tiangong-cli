@@ -4,7 +4,10 @@ const path = require("path");
 const fs = require("fs");
 const { isObject } = require("@tiangongkit/utils");
 const formatPath = require("@tiangongkit/format-path");
-const { getDefaultRegistry } = require("@tiangongkit/get-npm-info");
+const {
+    getDefaultRegistry,
+    getNpmLatestVersion,
+} = require("@tiangongkit/get-npm-info");
 const log = require("@tiangongkit/log");
 const pkgDir = require("pkg-dir").sync;
 const npminstall = require("npminstall");
@@ -17,17 +20,40 @@ class Package {
         if (!isObject(options)) {
             throw new Error("Package 类的 options 参数必须为对象");
         }
+        //  包名称
         this.packageName = options.name;
+        // 包版本
         this.version = options.version;
         // package 的路径
         this.targetPath = options.targetPath;
         this.storeDir = options.storeDir;
+        this.cachePackagePrefix = "";
+    }
+
+    get cacheFilePath() {
+        log.verbose(
+            path.resolve(
+                this.storeDir,
+                `/_${this.packageName}@${this.version}@${this.packageName}`
+            )
+        );
+        return path.resolve(this.storeDir, `/`);
+    }
+
+    async prepare() {
+        if (this.version === "latest") {
+            this.version = await getNpmLatestVersion(this.packageName);
+        }
     }
     // 判断当前 package 是否存在
-    exists() {
-        const target = path.resolve(this.targetPath, this.packageName);
-        log.verbose("需要拉取的程序所在的地址", target);
-        return fs.existsSync(target);
+    async exists() {
+        if (this.storeDir) {
+            // 处理缓存逻辑
+            await this.prepare();
+            return fs.existsSync(this.cacheFilePath);
+        } else {
+            return fs.existsSync(this.target);
+        }
     }
     // 安装
     async install() {

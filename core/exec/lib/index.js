@@ -6,8 +6,8 @@ const path = require("path");
 
 // 命令和包的映射
 const SETTINGS = {
-    init: "@tiangongkit/init",
-    // init: "foo",
+    // init: "@tiangongkit/init",
+    init: "foo",
     publish: "@tiangongkit/init",
     start: "@tiangongkit/init",
 };
@@ -28,8 +28,6 @@ async function exec() {
         // 生成缓存路径【绝对路径】
         targetPath = path.resolve(homePath, CACHE_DIR);
         storeDir = path.resolve(targetPath, "node_modules");
-        log.verbose("targetPath", targetPath);
-        log.verbose("storeDir", storeDir);
 
         const opts = {
             targetPath,
@@ -37,10 +35,9 @@ async function exec() {
             version,
             storeDir,
         };
-        log.verbose(JSON.stringify(opts));
         const pkg = new Package(opts);
 
-        if (!pkg.exists()) {
+        if (!(await pkg.exists())) {
             await pkg.install();
         } else {
             await pkg.update();
@@ -52,7 +49,6 @@ async function exec() {
             name,
             version,
         };
-        log.verbose(JSON.stringify(opts));
 
         const pkg = new Package(opts);
         const entryFilePath = pkg.getEntryFilePath();
