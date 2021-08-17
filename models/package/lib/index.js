@@ -33,7 +33,10 @@ class Package {
     });
   }
   // 更新
-  update() {}
+  update() {
+    // 判断当前 package 是否存在
+  }
+
   // 获取入口文件的路径
   getEntryFilePath() {
     // 1.  获取package.json所在目录 pkg-dir
