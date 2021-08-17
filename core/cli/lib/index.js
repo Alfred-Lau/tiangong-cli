@@ -171,6 +171,10 @@ async function cli(argv) {
         registryCommand();
     } catch (error) {
         // 隐藏堆栈信息，自定义
-        log.error(error.message);
+        if (this.opts().debug) {
+            log.error(e);
+        } else {
+            log.error(error.message);
+        }
     }
 }

@@ -7,6 +7,7 @@ const path = require("path");
 // 命令和包的映射
 const SETTINGS = {
     init: "@tiangongkit/init",
+    // init: "foo",
     publish: "@tiangongkit/init",
     start: "@tiangongkit/init",
 };
@@ -36,13 +37,13 @@ async function exec() {
             version,
             storeDir,
         };
-        log.info(JSON.stringify(opts));
+        log.verbose(JSON.stringify(opts));
         const pkg = new Package(opts);
 
-        if (pkg.exists()) {
-            // await pkg.install();
+        if (!pkg.exists()) {
+            await pkg.install();
         } else {
-            // await pkg.update();
+            await pkg.update();
         }
     } else {
         // targetPath 存在
@@ -52,11 +53,11 @@ async function exec() {
             version,
             storeDir,
         };
-        log.info(JSON.stringify(opts));
+        log.verbose(JSON.stringify(opts));
 
         const pkg = new Package(opts);
         const entryFilePath = pkg.getEntryFilePath();
-        console.log("entryFilePath", entryFilePath);
+        log.verbose("entryFilePath", entryFilePath);
         // 这一段很精彩
         require(entryFilePath).apply(null, arguments);
     }
