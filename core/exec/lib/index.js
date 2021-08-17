@@ -51,7 +51,6 @@ async function exec() {
             targetPath,
             name,
             version,
-            storeDir,
         };
         log.verbose(JSON.stringify(opts));
 
