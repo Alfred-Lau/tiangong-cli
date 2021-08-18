@@ -3,6 +3,7 @@
 const Package = require("@tiangongkit/package");
 const log = require("@tiangongkit/log");
 const path = require("path");
+const cp = require("child_process");
 
 // 命令和包的映射
 const SETTINGS = {
@@ -13,6 +14,21 @@ const SETTINGS = {
 };
 
 const CACHE_DIR = "dependencies";
+
+/**
+ *多平台兼容处理
+ *
+ * @param {*} cmd 运行命令
+ * @param {*} argv 运行参数
+ * @param {*} opt 运行选项
+ * @return {*}
+ */
+function spawn(cmd, argv, opt) {
+    const isWin32 = process.platform === "win32";
+    const specifiedCmd = isWin ? "cmd" : cmd;
+    const specifiedArgs = isWin32 ? ["/c", "node", ...argv] : argv;
+    return cp.spawn(specifiedCmd, specifiedArgs, opt);
+}
 
 async function exec() {
     // 1， 拿到 targetPath ,转化为 modulePath
