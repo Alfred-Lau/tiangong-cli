@@ -54,11 +54,18 @@ async function exec() {
         };
         pkg = new Package(opts);
 
-        if (!(await pkg.exists())) {
-            await pkg.install();
-        } else {
-            await pkg.update();
+        try {
+            if (!(await pkg.exists())) {
+                await pkg.install();
+            } else {
+                await pkg.update();
+            }
+        }catch (e) {
+            log.error(e.message)
+            process.exit(1)
         }
+
+
     } else {
         // targetPath 存在
         const opts = {
