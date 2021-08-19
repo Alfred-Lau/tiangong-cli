@@ -73,9 +73,9 @@ class Package {
 
     // 获取入口文件的路径
     getEntryFilePath() {
-        function _getEntryFilePath(path) {
+        function _getEntryFilePath(_path) {
             // 1.  获取package.json所在目录 pkg-dir
-            const rootPath = pkgDir(path);
+            const rootPath = pkgDir(_path);
             // 2. 读取 package.json
             if (rootPath) {
                 const pkg = require(path.resolve(rootPath, "package.json"));
