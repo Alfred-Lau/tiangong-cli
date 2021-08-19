@@ -13,10 +13,11 @@ const log = require("@tiangongkit/log");
 const pkgDir = require("pkg-dir").sync;
 const fse = require("fs-extra");
 const npminstall = require("npminstall");
+const { resolve } = require("npminstall/lib/download/npm");
 
 async function pathExists(_path) {
     try {
-        await fsPromises.access(path);
+        await fsPromises.access(_path);
         return true;
     } catch {
         return false;
@@ -80,11 +81,35 @@ class Package {
         });
     }
     // 更新
-    update() {
+    async update() {
         // 判断当前 package 是否存在
         log.verbose("开始更新程序");
+        await this.prepare();
+        // 1. 查询最新版本号
+        const lastNpmPkgVersion = await getNpmLatestVersion(this.packageName);
+        // 2. 查询最新版本号对应路径是否存在
+        const lastNpmPkgPath = this.getSpecifiedCachePath(lastNpmPkgVersion);
+        // 3. 存在----修改版本号即可；不存在--- 开始下载安装
+        if (!pathExists(lastNpmPkgPath)) {
+            // 开始安装
+            await npminstall({
+                root: this.targetPath,
+                storeDir: this.storeDir,
+                registry: getDefaultRegistry(),
+                pkgs: [{ name: this.packageName, version: lastNpmPkgVersion }],
+            });
+            this.version = lastNpmPkgVersion;
+        } else {
+            this.version = lastNpmPkgVersion;
+        }
     }
 
+    getSpecifiedCachePath(version) {
+        return path.resolve(
+            this.storeDir,
+            `_${this.cachePackagePrefix}@${version}@${this.packageName}`
+        );
+    }
     // 获取入口文件的路径
     getEntryFilePath() {
         function _getEntryFilePath(_path) {

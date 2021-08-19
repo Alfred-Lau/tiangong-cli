@@ -28,7 +28,6 @@ function spawn(cmd, argv, opt) {
     const specifiedCmd = isWin32 ? "cmd" : cmd;
     const specifiedArgs = isWin32 ? ["/c", cmd, ...argv] : argv;
 
-    console.log(specifiedCmd, specifiedArgs, opt);
     return cp.spawn(specifiedCmd, specifiedArgs, opt);
 }
 
@@ -104,7 +103,7 @@ async function exec() {
 
         //  子进程本身的设置
         child.on("error", (e) => {
-            log.error(e.message);
+            log.error(e);
             process.exit(1);
         });
         child.on("exit", (e) => {
