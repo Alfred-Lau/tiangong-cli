@@ -92,8 +92,11 @@ class Package {
         }
         //  支持缓存
         if (this.storeDir) {
+            log.info("缓存存在");
             return _getEntryFilePath(this.storeDir);
         } else {
+            log.info("缓存不存在");
+
             return _getEntryFilePath(this.targetPath);
         }
     }

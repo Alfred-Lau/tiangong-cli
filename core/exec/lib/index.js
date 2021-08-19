@@ -25,8 +25,10 @@ const CACHE_DIR = "dependencies";
  */
 function spawn(cmd, argv, opt) {
     const isWin32 = process.platform === "win32";
-    const specifiedCmd = isWin ? "cmd" : cmd;
-    const specifiedArgs = isWin32 ? ["/c", "node", ...argv] : argv;
+    const specifiedCmd = isWin32 ? "cmd" : cmd;
+    const specifiedArgs = isWin32 ? ["/c", cmd, ...argv] : argv;
+
+    console.log(specifiedCmd, specifiedArgs, opt);
     return cp.spawn(specifiedCmd, specifiedArgs, opt);
 }
 
@@ -75,7 +77,43 @@ async function exec() {
     const entryFilePath = pkg.getEntryFilePath();
     log.verbose("entryFilePath", entryFilePath);
     // 这一段很精彩
-    require(entryFilePath).apply(null, arguments);
+    try {
+        const args = Array.from(arguments);
+        // 纯化参数对象
+        const fuzzyOptionsObject = args[args.length - 1];
+        const pureOptionsObject = Object.create(null);
+        Object.keys(fuzzyOptionsObject).forEach((arg) => {
+            if (
+                fuzzyOptionsObject.hasOwnProperty(arg) &&
+                !arg.startsWith("_") &&
+                arg !== "parent"
+            ) {
+                pureOptionsObject[arg] = fuzzyOptionsObject[arg];
+            }
+        });
+        args[args.length - 1] = pureOptionsObject;
+        const code = `require('${entryFilePath}').call(null, ${JSON.stringify(
+            args
+        )})`;
+        const child = spawn("node", ["-e", code], {
+            // 子进程的 stdio 的设置
+            cwd: process.cwd(),
+            // 把父进程的 io 句柄给到 子进程
+            stdio: "inherit",
+        });
+
+        //  子进程本身的设置
+        child.on("error", (e) => {
+            log.error(e.message);
+            process.exit(1);
+        });
+        child.on("exit", (e) => {
+            log.verbose("命令执行成功:" + e);
+            process.exit(e);
+        });
+    } catch (error) {
+        log.error(error.message);
+    }
     // 4. 封装其他方法 到  Package 类上面
 }
 module.exports = exec;
