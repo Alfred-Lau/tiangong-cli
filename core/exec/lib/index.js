@@ -35,6 +35,7 @@ async function exec() {
     let targetPath = process.env.CLI_TARGET_PATH;
     let homePath = process.env.CLI_HOME_PATH;
     let storeDir = "";
+    let pkg = null;
     // 2. 实例化 Package 类
 
     const version = "latest";
@@ -51,7 +52,7 @@ async function exec() {
             version,
             storeDir,
         };
-        const pkg = new Package(opts);
+        pkg = new Package(opts);
 
         if (!(await pkg.exists())) {
             await pkg.install();
@@ -66,14 +67,15 @@ async function exec() {
             version,
         };
 
-        const pkg = new Package(opts);
-        const entryFilePath = pkg.getEntryFilePath();
-        log.verbose("entryFilePath", entryFilePath);
-        // 这一段很精彩
-        require(entryFilePath).apply(null, arguments);
+        pkg = new Package(opts);
     }
 
-    // 3. 获取入口文件  Package.getRootFile
+    // TODO:3. 获取入口文件  Package.getRootFile
+
+    const entryFilePath = pkg.getEntryFilePath();
+    log.verbose("entryFilePath", entryFilePath);
+    // 这一段很精彩
+    require(entryFilePath).apply(null, arguments);
     // 4. 封装其他方法 到  Package 类上面
 }
 module.exports = exec;

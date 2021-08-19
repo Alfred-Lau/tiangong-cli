@@ -73,20 +73,28 @@ class Package {
 
     // 获取入口文件的路径
     getEntryFilePath() {
-        // 1.  获取package.json所在目录 pkg-dir
-        const rootPath = pkgDir(this.targetPath);
-        // 2. 读取 package.json
-        if (rootPath) {
-            const pkg = require(path.resolve(rootPath, "package.json"));
-            // 3. 找到 main/lib path
-            if (pkg && (pkg.main || pkg.lib)) {
-                // 4. 路径的兼容
-                return formatPath(path.resolve(rootPath, `${pkg.main}`));
+        function _getEntryFilePath(path) {
+            // 1.  获取package.json所在目录 pkg-dir
+            const rootPath = pkgDir(path);
+            // 2. 读取 package.json
+            if (rootPath) {
+                const pkg = require(path.resolve(rootPath, "package.json"));
+                // 3. 找到 main/lib path
+                if (pkg && (pkg.main || pkg.lib)) {
+                    // 4. 路径的兼容
+                    return formatPath(path.resolve(rootPath, `${pkg.main}`));
+                } else {
+                    return path.resolve(rootPath, "index.js");
+                }
             } else {
-                return path.resolve(rootPath, "index.js");
+                return null;
             }
+        }
+        //  支持缓存
+        if (this.storeDir) {
+            return _getEntryFilePath(this.storeDir);
         } else {
-            return null;
+            return _getEntryFilePath(this.targetPath);
         }
     }
 }
