@@ -39,17 +39,11 @@ class Package {
         // package 的路径
         this.targetPath = options.targetPath;
         this.storeDir = options.storeDir;
-        this.cachePackagePrefix = "";
+        this.cachePackagePrefix = this.packageName.replace('/','_');
     }
 
     get cacheFilePath() {
-        log.verbose(
-            path.resolve(
-                this.storeDir,
-                `/_${this.packageName}@${this.version}@${this.packageName}`
-            )
-        );
-        return path.resolve(this.storeDir, `/`);
+        return path.resolve(this.storeDir, `_${this.cachePackagePrefix}@${this.version}@${this.packageName}`);
     }
 
     async prepare() {
@@ -132,10 +126,9 @@ class Package {
         //  支持缓存
         if (this.storeDir) {
             log.info("缓存存在");
-            return _getEntryFilePath(this.storeDir);
+            return _getEntryFilePath(this.cacheFilePath);
         } else {
             log.info("缓存不存在");
-
             return _getEntryFilePath(this.targetPath);
         }
     }

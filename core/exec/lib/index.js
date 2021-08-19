@@ -7,8 +7,7 @@ const cp = require("child_process");
 
 // 命令和包的映射
 const SETTINGS = {
-    // init: "@tiangongkit/init",
-    init: "foo",
+    init: "@tiangongkit/init",
     publish: "@tiangongkit/init",
     start: "@tiangongkit/init",
 };
