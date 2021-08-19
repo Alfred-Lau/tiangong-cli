@@ -28,7 +28,9 @@
         "@tiangongkit/get-npm-info": "file:../../utils/get-npm-info",
         "@tiangongkit/log": "file:../../utils/log",
         "@tiangongkit/utils": "file:../../utils/utils",
-        "npminstall": "^4.10.0"
+        "fs-extra": "^7.0.1",
+        "npminstall": "^4.10.0",
+        "path-exists": "^5.0.0"
     },
     "scripts": {
         "test": "echo \"Error: run tests from root\" && exit 1"

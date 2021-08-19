@@ -1,7 +1,8 @@
 "use strict";
 
 const path = require("path");
-const fs = require("fs");
+const fsPromises = require("fs").promises;
+
 const { isObject } = require("@tiangongkit/utils");
 const formatPath = require("@tiangongkit/format-path");
 const {
@@ -10,7 +11,17 @@ const {
 } = require("@tiangongkit/get-npm-info");
 const log = require("@tiangongkit/log");
 const pkgDir = require("pkg-dir").sync;
+const fse = require("fs-extra");
 const npminstall = require("npminstall");
+
+async function pathExists(_path) {
+    try {
+        await fsPromises.access(path);
+        return true;
+    } catch {
+        return false;
+    }
+}
 
 class Package {
     constructor(options) {
@@ -41,6 +52,9 @@ class Package {
     }
 
     async prepare() {
+        if (this.storeDir && !(await pathExists(this.storeDir))) {
+            fse.mkdirSync(this.storeDir);
+        }
         if (this.version === "latest") {
             this.version = await getNpmLatestVersion(this.packageName);
         }
@@ -48,11 +62,11 @@ class Package {
     // 判断当前 package 是否存在
     async exists() {
         if (this.storeDir) {
-            // 处理缓存逻辑
+            // 准备函数:1. 处理缓存逻辑，保证缓存路径存在；2. 替换语义化版本号为最新版本号
             await this.prepare();
-            return fs.existsSync(this.cacheFilePath);
+            return await pathExists(this.cacheFilePath);
         } else {
-            return fs.existsSync(this.target);
+            return await pathExists(this.target);
         }
     }
     // 安装
