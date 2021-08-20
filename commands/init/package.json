@@ -15,8 +15,8 @@
     "test": "__tests__"
   },
   "dependencies": {
-    "@tiangongkit/log": "file:../../utils/log",
-    "@tiangongkit/command": "file:../../models/command"
+    "@tiangongkit/command": "file:../../models/command",
+    "@tiangongkit/log": "file:../../utils/log"
   },
   "files": [
     "lib"
