@@ -12,15 +12,10 @@ class InitCommand extends Command {
   }
 }
 
-function init(projectName, cmdObj) {
-  console.log(
-    "init start working",
-    projectName,
-    cmdObj,
-    process.env.CLI_TARGET_PATH
-  );
+function init(args) {
+  console.log("init start working");
 
-  return new InitCommand();
+  return new InitCommand(args);
 }
 
 module.exports = init;

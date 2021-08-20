@@ -3,12 +3,12 @@
 const log = require("@tiangongkit/log");
 
 class Command {
-  constructor(options = {}) {
-    log.info("我是基类，我开始输出了", options);
-  }
+    constructor(options = {}) {
+        console.log("", JSON.stringify(options));
+    }
 
-  init() {}
-  exec() {}
+    init() {}
+    exec() {}
 }
 
 module.exports = Command;
