@@ -34,9 +34,13 @@ class InitCommand extends Command {
   }
 
   isEmptyDir(localPath) {
-    console.log(fs.readdirSync(localPath));
-    //TODO: 过滤逻辑待添加
-    return fs.readdirSync(localPath);
+    const existedFiles = fs.readdirSync(localPath)
+    const filteredFiles = existedFiles.filter(file=>{
+      return !file.startsWith('.') || !['node_modules'].includes(file)
+    })
+    console.log('filteredFiles',filteredFiles)
+
+    return filteredFiles.length === 0
   }
 }
 
