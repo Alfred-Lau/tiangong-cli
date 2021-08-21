@@ -41,9 +41,11 @@ class Command {
   }
 
   init() {
-    // throw new Error("命令参数报错");
+    throw new Error("init 方法必须实现");
   }
-  exec() {}
+  exec() {
+    throw new Error("exec 方法必须实现");
+  }
   // 最低 node 版本兼容性检查
 
   checkNodeVersion() {

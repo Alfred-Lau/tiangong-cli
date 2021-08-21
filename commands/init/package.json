@@ -16,7 +16,9 @@
   },
   "dependencies": {
     "@tiangongkit/command": "file:../../models/command",
-    "@tiangongkit/log": "file:../../utils/log"
+    "@tiangongkit/log": "file:../../utils/log",
+    "fs-extra": "^10.0.0",
+    "inquirer": "^8.1.2"
   },
   "files": [
     "lib"

@@ -35,6 +35,6 @@
     "url": "https://github.com/Alfred-Lau/tiangong-cli/issues"
   },
   "engines": {
-    "node": "v14.0.0"
+    "node": "16.0.0"
   }
 }
