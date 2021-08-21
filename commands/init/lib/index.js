@@ -4,7 +4,8 @@ const Command = require("@tiangongkit/command");
 
 class InitCommand extends Command {
   init() {
-    super.init();
+    // 开始初始化
+    console.log("", this._cmd, this._argv);
   }
 
   exec() {

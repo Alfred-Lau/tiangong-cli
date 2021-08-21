@@ -27,9 +27,14 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {
-    "@tiangongkit/log": "file:../../utils/log"
+    "@tiangongkit/log": "file:../../utils/log",
+    "colors": "^1.4.0",
+    "semver": "^7.3.4"
   },
   "bugs": {
     "url": "https://github.com/Alfred-Lau/tiangong-cli/issues"
+  },
+  "engines": {
+    "node": "v14.0.0"
   }
 }
