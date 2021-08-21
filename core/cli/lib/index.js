@@ -8,9 +8,9 @@ const colors = require("colors/safe");
 const userHome = require("user-home");
 const exists = require("path-exists").sync;
 const commander = require("commander");
-const log = require("@lerna-usage/log");
-const exec = require("@lerna-usage/exec");
-const { getLatestVersion } = require("@lerna-usage/get-npm-info");
+const log = require("@tiangongkit/log");
+const exec = require("@tiangongkit/exec");
+const { getLatestVersion } = require("@tiangongkit/get-npm-info");
 
 const pkg = require("../package.json");
 
@@ -19,22 +19,10 @@ const program = new commander.Command();
 
 // 版本号检查功能
 function checkPkgVersion() {
-  log.info("当前软件版本", pkg.version);
+  log.verbose("当前软件版本", pkg.version);
 }
 
-// 最低 node 版本兼容性检查
-function checkNodeVersion() {
-  // 获取 当前版本
-  const currentNodeVersion = process.version;
-  // 获取 最低版本
-  const lastNodeVersion = pkg.engines.node;
-
-  if (semver.lt(currentNodeVersion, lastNodeVersion)) {
-    throw new Error(colors.red(`node 版本必须高于 ${lastNodeVersion}`));
-  } else {
-    log.info("检查当前 Node 版本", colors.green(`${currentNodeVersion}`));
-  }
-}
+function checkNodeVersion() {}
 
 function checkRoot() {
   const rootCheck = require("root-check");
@@ -49,7 +37,7 @@ function checkUserHome() {
   if (!userHome || !exists(userHome)) {
     throw new Error(colors.red("当前用户的主目录不存在"));
   } else {
-    log.info("检查用户主目录", ` ${userHome}`);
+    log.verbose("检查用户主目录", ` ${userHome}`);
   }
 }
 
@@ -92,7 +80,7 @@ async function checkGlobalUpdate() {
 
   const latestVersion = await getLatestVersion(name, currentVersion);
   if (semver.gt(latestVersion, currentVersion)) {
-    log.info(
+    log.verbose(
       "检查最新版本",
       `当前版本 ${currentVersion} 不是最新版本，请运行 ${colors.yellow(
         `npm i -g ${name} `
@@ -137,9 +125,9 @@ function registryCommand() {
   });
 
   // 未知命令的处理逻辑
-  program.on("command:*", function (unkonwnCommand) {
+  program.on("command:*", function (unknownCommand) {
     const availableCommands = program.commands.map((cmd) => cmd.name());
-    log.warn(colors.red(`${unkonwnCommand} 命令不存在`));
+    log.warn(colors.red(`${unknownCommand} 命令不存在`));
     program.outputHelp();
     if (availableCommands.length) {
       console.log(
@@ -148,19 +136,13 @@ function registryCommand() {
     }
   });
 
-  // node exe.js xxx
-  if (process.argv.length < 3) {
-    program.outputHelp();
-    console.log();
-  }
-
   // last
   program.parse(process.argv);
 }
 
 async function prepare() {
   checkPkgVersion();
-  checkNodeVersion();
+  // checkNodeVersion();
   checkRoot();
   checkUserHome();
   checkDefaultEnv();
@@ -174,6 +156,10 @@ async function cli(argv) {
     registryCommand();
   } catch (error) {
     // 隐藏堆栈信息，自定义
-    log.error(error.message);
+    if (this.opts().debug) {
+      log.error(e);
+    } else {
+      log.error(error.message);
+    }
   }
 }

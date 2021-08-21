@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const exec = require('..');
+const exec = require("..");
 
-describe('@lerna-usage/exec', () => {
-    it('needs tests');
+describe("@tiangongkit/exec", () => {
+  it("needs tests");
 });

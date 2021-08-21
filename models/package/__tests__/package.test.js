@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const package = require('..');
+const package = require("..");
 
-describe('@lerna-usage/package', () => {
-    it('needs tests');
+describe("@tiangongkit/package", () => {
+  it("needs tests");
 });

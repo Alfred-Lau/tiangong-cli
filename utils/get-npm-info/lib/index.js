@@ -1,6 +1,12 @@
 "use strict";
 
-module.exports = { getNpmInfo, getSemverVersions, getLatestVersion };
+module.exports = {
+    getNpmInfo,
+    getSemverVersions,
+    getLatestVersion,
+    getDefaultRegistry,
+    getNpmLatestVersion,
+};
 
 const axios = require("axios");
 const urlJoin = require("url-join");
@@ -13,30 +19,30 @@ const semver = require("semver");
  * @param {*} registry 允许自定义repo
  */
 function getNpmInfo(name, registry) {
-  if (!name) {
-    return null;
-  }
+    if (!name) {
+        return null;
+    }
 
-  let registryUrl = registry || getDefaultRegistry();
-  const url = urlJoin(registryUrl, name);
+    let registryUrl = registry || getDefaultRegistry();
+    const url = urlJoin(registryUrl, name);
 
-  return axios
-    .get(url)
-    .then((resp) => {
-      if (resp.status === 200) {
-        return resp.data;
-      }
-      return null;
-    })
-    .catch((err) => {
-      return Promise.reject(err);
-    });
+    return axios
+        .get(url)
+        .then((resp) => {
+            if (resp.status === 200) {
+                return resp.data;
+            }
+            return null;
+        })
+        .catch((err) => {
+            return Promise.reject(err);
+        });
 }
 
 function getDefaultRegistry(isOrigin = false) {
-  return isOrigin
-    ? '"http://registry.npmjs.org/"'
-    : "http://registry.npm.taobao.org/";
+    return isOrigin
+        ? '"http://registry.npmjs.org/"'
+        : "http://registry.npm.taobao.org/";
 }
 
 /**
@@ -47,29 +53,40 @@ function getDefaultRegistry(isOrigin = false) {
  * @param {*} registry
  */
 async function getSemverVersions(npmName, currentVersion, registry) {
-  const info = await getNpmInfo(npmName, registry);
-  try {
-    if (info) {
-      return (
-        Object.keys(info.versions)
-          // 直接写 运算符号
-          .filter((version) => semver.satisfies(version, `>${currentVersion}`))
-          .sort((a, b) => semver.gt(b, a))
-      );
+    const info = await getNpmInfo(npmName, registry);
+    try {
+        if (info) {
+            return (
+                Object.keys(info.versions)
+                    // 直接写 运算符号
+                    .filter((version) =>
+                        semver.satisfies(version, `>${currentVersion}`)
+                    )
+                    .sort((a, b) => semver.gt(b, a))
+            );
+        }
+    } catch (error) {
+        return [];
     }
-  } catch (error) {
-    return [];
-  }
 }
 
 async function getLatestVersion(npmName, currentVersion, registry) {
-  const semverVersions = await getSemverVersions(
-    npmName,
-    currentVersion,
-    registry
-  );
-  if (semverVersions && semverVersions.length) {
-    return semverVersions[0];
-  }
-  return null;
+    const semverVersions = await getSemverVersions(
+        npmName,
+        currentVersion,
+        registry
+    );
+    if (semverVersions && semverVersions.length) {
+        return semverVersions[0];
+    }
+    return null;
+}
+
+async function getNpmLatestVersion(npmName) {
+    try {
+        const info = await getNpmInfo(npmName);
+        if (info) {
+            return Object.keys(info.versions).sort((a, b) => a > b)[0];
+        }
+    } catch (error) {}
 }

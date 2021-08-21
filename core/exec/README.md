@@ -1,11 +1,11 @@
-# `@lerna-usage/exec`
+# `@tiangongkit/exec`
 
 > TODO: description
 
 ## Usage
 
 ```
-const exec = require('@lerna-usage/exec');
+const exec = require('@tiangongkit/exec');
 
 // TODO: DEMONSTRATE API
 ```

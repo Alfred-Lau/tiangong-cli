@@ -1,0 +1,40 @@
+{
+  "name": "@tiangongkit/command",
+  "version": "1.0.0",
+  "description": "command base class",
+  "keywords": [
+    "command"
+  ],
+  "author": "Alfred-Lau <jian.liu@icloud.com>",
+  "homepage": "https://github.com/Alfred-Lau/tiangong-cli/tree/master/core/command#readme",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alfred-Lau/tiangong-cli.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "dependencies": {
+    "@tiangongkit/log": "file:../../utils/log",
+    "colors": "^1.4.0",
+    "semver": "^7.3.4"
+  },
+  "bugs": {
+    "url": "https://github.com/Alfred-Lau/tiangong-cli/issues"
+  },
+  "engines": {
+    "node": "16.0.0"
+  }
+}
