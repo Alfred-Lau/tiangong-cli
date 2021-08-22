@@ -64,12 +64,12 @@ class Package {
       await this.prepare();
       return await pathExists(this.cacheFilePath);
     } else {
-      return await pathExists(this.target);
+      return await pathExists(this.targetPath);
     }
   }
   // 安装
   async install() {
-    log.verbose("开始安装程序");
+    log.verbose("", "开始安装程序");
     await npminstall({
       root: this.targetPath,
       storeDir: this.storeDir,
@@ -80,14 +80,14 @@ class Package {
   // 更新
   async update() {
     // 判断当前 package 是否存在
-    log.verbose("开始更新程序");
+    log.verbose("", "开始更新程序");
     await this.prepare();
     // 1. 查询最新版本号
     const lastNpmPkgVersion = await getNpmLatestVersion(this.packageName);
     // 2. 查询最新版本号对应路径是否存在
     const lastNpmPkgPath = this.getSpecifiedCachePath(lastNpmPkgVersion);
     // 3. 存在----修改版本号即可；不存在--- 开始下载安装
-    if (!pathExists(lastNpmPkgPath)) {
+    if (!(await pathExists(lastNpmPkgPath))) {
       // 开始安装
       await npminstall({
         root: this.targetPath,
@@ -128,10 +128,10 @@ class Package {
     }
     //  支持缓存
     if (this.storeDir) {
-      log.info("缓存存在");
+      log.info("", "缓存存在");
       return _getEntryFilePath(this.cacheFilePath);
     } else {
-      log.info("缓存不存在");
+      log.info("", "缓存不存在");
       return _getEntryFilePath(this.targetPath);
     }
   }
