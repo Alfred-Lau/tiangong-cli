@@ -18,6 +18,7 @@
     "@tiangongkit/command": "file:../../models/command",
     "@tiangongkit/log": "file:../../utils/log",
     "@tiangongkit/request": "file:../../utils/request",
+    "@tiangongkit/shared": "file:../../shared",
     "fs-extra": "^10.0.0",
     "inquirer": "^8.1.2"
   },
