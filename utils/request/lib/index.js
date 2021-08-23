@@ -14,7 +14,7 @@ const request = axios.create({
 request.interceptors.response.use(
   (resp) => {
     if (resp.status === 200) {
-      return resp.data;
+      return resp.data.data;
     }
   },
   (err) => {

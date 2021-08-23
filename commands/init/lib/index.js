@@ -102,7 +102,15 @@ class InitCommand extends Command {
     });
 
     projectInfo.type = type;
+    this.currentTemplate = this.templates.filter(
+      (template) => template.type === type.toLowerCase()
+    );
 
+    const title = type === CLI_PROJECT_TYPE ? "项目" : "组件";
+    const projectNamePrompt = {
+      type: "input",
+      name: "projectName",
+    };
     return projectInfo;
   }
 
