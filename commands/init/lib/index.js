@@ -1,6 +1,7 @@
 "use strict";
 const log = require("@tiangongkit/log");
 const Command = require("@tiangongkit/command");
+const request = require("@tiangongkit/request");
 const inquirer = require("inquirer");
 const fs = require("fs");
 const fse = require("fs-extra");
@@ -21,8 +22,14 @@ class InitCommand extends Command {
     }
   }
 
+  async getProjectTemplates() {
+    const templates = await request("/api/cli/template/list");
+    log.verbose("templates", templates);
+  }
+
   async prepare() {
     // 检查模板是否存在
+    const templates = await this.getProjectTemplates();
     const localPath = process.cwd();
     if (this.isEmptyDir(localPath)) {
       const answer = await inquirer.prompt({
@@ -34,13 +41,12 @@ class InitCommand extends Command {
   }
 
   isEmptyDir(localPath) {
-    const existedFiles = fs.readdirSync(localPath)
-    const filteredFiles = existedFiles.filter(file=>{
-      return !file.startsWith('.') || !['node_modules'].includes(file)
-    })
-    console.log('filteredFiles',filteredFiles)
+    const existedFiles = fs.readdirSync(localPath);
+    const filteredFiles = existedFiles.filter((file) => {
+      return !file.startsWith(".") || !["node_modules"].includes(file);
+    });
 
-    return filteredFiles.length === 0
+    return filteredFiles.length === 0;
   }
 }
 
