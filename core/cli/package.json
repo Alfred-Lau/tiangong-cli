@@ -17,7 +17,7 @@
     "lib"
   ],
   "publishConfig": {
-    "registry": "https://registry.npm.taobao.org/"
+    "access": "public"
   },
   "repository": {
     "type": "git",
@@ -53,5 +53,5 @@
     "@types/path-exists": "^4.0.2",
     "@types/user-home": "^2.0.0"
   },
-  "gitHead": "0e1cdbca06bf8c7dbb50ac898a0672533baee66d"
+  "gitHead": "1e55991b76335f126d6e93898247b999d4ae333d"
 }
