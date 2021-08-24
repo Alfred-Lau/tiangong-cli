@@ -30,10 +30,10 @@
     "url": "https://github.com/Alfred-Lau/tiangong-cli/issues"
   },
   "dependencies": {
-    "@tiangongkit/exec": "file:../exec",
-    "@tiangongkit/get-npm-info": "file:../../utils/get-npm-info",
-    "@tiangongkit/init": "file:../../commands/init",
-    "@tiangongkit/log": "file:../../utils/log",
+    "@tiangongkit/exec": "^0.0.1",
+    "@tiangongkit/get-npm-info": "^0.0.1",
+    "@tiangongkit/init": "^0.0.1",
+    "@tiangongkit/log": "^0.0.1",
     "colors": "^1.4.0",
     "commander": "^7.1.0",
     "dotenv": "^8.2.0",
@@ -52,5 +52,6 @@
     "@types/dotenv": "^8.2.0",
     "@types/path-exists": "^4.0.2",
     "@types/user-home": "^2.0.0"
-  }
+  },
+  "gitHead": "0e1cdbca06bf8c7dbb50ac898a0672533baee66d"
 }

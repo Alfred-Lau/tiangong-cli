@@ -24,10 +24,10 @@
         "url": "git+https://github.com/Alfred-Lau/tiangong-cli.git"
     },
     "dependencies": {
-        "@tiangongkit/format-path": "file:../../utils/format-path",
-        "@tiangongkit/get-npm-info": "file:../../utils/get-npm-info",
-        "@tiangongkit/log": "file:../../utils/log",
-        "@tiangongkit/utils": "file:../../utils/utils",
+        "@tiangongkit/format-path": "^0.0.1",
+        "@tiangongkit/get-npm-info": "^0.0.1",
+        "@tiangongkit/log": "^0.0.1",
+        "@tiangongkit/utils": "^0.0.1",
         "fs-extra": "^7.0.1",
         "npminstall": "^4.10.0",
         "path-exists": "^5.0.0",
@@ -38,5 +38,6 @@
     },
     "bugs": {
         "url": "https://github.com/Alfred-Lau/tiangong-cli/issues"
-    }
+    },
+    "gitHead": "0e1cdbca06bf8c7dbb50ac898a0672533baee66d"
 }

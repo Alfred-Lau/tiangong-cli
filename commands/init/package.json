@@ -15,11 +15,11 @@
     "test": "__tests__"
   },
   "dependencies": {
-    "@tiangongkit/command": "file:../../models/command",
-    "@tiangongkit/get-npm-info": "file:../../utils/get-npm-info",
-    "@tiangongkit/log": "file:../../utils/log",
-    "@tiangongkit/package": "file:../../models/package",
-    "@tiangongkit/request": "file:../../utils/request",
+    "@tiangongkit/command": "^0.0.1",
+    "@tiangongkit/get-npm-info": "^0.0.1",
+    "@tiangongkit/log": "^0.0.1",
+    "@tiangongkit/package": "^0.0.1",
+    "@tiangongkit/request": "^0.0.1",
     "@tiangongkit/shared": "file:../../shared",
     "fs-extra": "^10.0.0",
     "inquirer": "^8.1.2",
@@ -41,5 +41,6 @@
   },
   "bugs": {
     "url": "https://github.com/Alfred-Lau/tiangong-cli/issues"
-  }
+  },
+  "gitHead": "0e1cdbca06bf8c7dbb50ac898a0672533baee66d"
 }
