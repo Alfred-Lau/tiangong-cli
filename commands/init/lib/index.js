@@ -1,11 +1,16 @@
 "use strict";
 const log = require("@tiangongkit/log");
 const Command = require("@tiangongkit/command");
+const Package = require("@tiangongkit/package");
 const request = require("@tiangongkit/request");
+const { getDefaultRegistry } = require("@tiangongkit/get-npm-info");
 const { CLI_COMPONENT_TYPE, CLI_PROJECT_TYPE } = require("@tiangongkit/shared");
 const inquirer = require("inquirer");
+const npminstall = require("npminstall");
+const userHome = require("user-home");
 const fs = require("fs");
 const fse = require("fs-extra");
+const path = require("path");
 
 class InitCommand extends Command {
   init() {
@@ -16,10 +21,40 @@ class InitCommand extends Command {
 
   async exec() {
     try {
-      //  1. 进行执行前准备
-      await this.prepare();
+      //  1. 进行执行前准备 [获取项目信息，需要的模板信息]
+      const projectInfo = await this.prepare();
+      // 1.1 缓存项目信息
+      this.projectInfo = projectInfo;
+      // 2.  进行模板下载
+      await this.downloadTemplates();
+      // 3. 进行模板安装到指定新建项目
     } catch (e) {
       log.error("", e.message);
+    }
+  }
+
+  async downloadTemplates() {
+    const { projectName, version } = this.projectInfo;
+    // 生成模板存储路径 和 模板缓存路径
+    const targetPath = path.resolve(userHome, ".tg_cli", "template");
+    const storeDir = path.resolve(
+      userHome,
+      ".tg_cli",
+      "template",
+      "node_modules"
+    );
+
+    const opts = {
+      targetPath,
+      name: projectName,
+      version,
+      storeDir,
+    };
+    const templateNpm = new Package(opts);
+    log.verbose("", templateNpm);
+    try {
+    } catch (error) {
+      log.error(error.message);
     }
   }
 
@@ -30,7 +65,6 @@ class InitCommand extends Command {
    */
   async getProjectTemplates() {
     const templates = await request("/api/cli/template/list");
-    log.verbose("templates", templates);
     if (!templates || templates.length === 0) {
       throw new Error("项目模板不存在");
     }
@@ -102,15 +136,69 @@ class InitCommand extends Command {
     });
 
     projectInfo.type = type;
-    this.currentTemplate = this.templates.filter(
-      (template) => template.type === type.toLowerCase()
-    );
+
+    this.currentTemplate = this.templates.filter((template) => {
+      return template.type === type.toUpperCase();
+    });
 
     const title = type === CLI_PROJECT_TYPE ? "项目" : "组件";
-    const projectNamePrompt = {
-      type: "input",
-      name: "projectName",
-    };
+    const defaultNamePrompt = [
+      {
+        type: "input",
+        name: "projectName",
+        default: this.projectName,
+        message: "请输入项目名称",
+      },
+    ];
+
+    const defaultPrompt = [
+      {
+        type: "input",
+        name: "version",
+        default: "1.0.0",
+        message: "请输入项目版本号",
+      },
+      {
+        type: "input",
+        name: "description",
+        default: "天工工程化体系项目模板",
+        message: "请输入项目描述",
+      },
+      {
+        type: "list",
+        name: "template",
+        message: "请选择项目模板",
+        choices: this.templates,
+      },
+    ];
+
+    if (type === CLI_PROJECT_TYPE) {
+      // 初始化项目问答
+      if (this.projectName) {
+        // 项目名称存在，直接使用
+        projectInfo.title = this.projectName;
+
+        const askedProjectInfo = await inquirer.prompt(defaultPrompt);
+
+        projectInfo = {
+          title,
+          ...projectInfo,
+          ...askedProjectInfo,
+        };
+      } else {
+        // 项目名称不存在，提示输入
+        const projectPromptWithName = defaultNamePrompt.concat(defaultPrompt);
+
+        const askedProjectInfo = await inquirer.prompt(projectPromptWithName);
+
+        projectInfo = {
+          ...projectInfo,
+          ...askedProjectInfo,
+        };
+      }
+    } else {
+      // 初始化组件问答
+    }
     return projectInfo;
   }
 

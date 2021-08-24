@@ -18,8 +18,12 @@
     "@tiangongkit/command": "file:../../models/command",
     "@tiangongkit/log": "file:../../utils/log",
     "@tiangongkit/request": "file:../../utils/request",
+    "@tiangongkit/get-npm-info": "file:../../utils/get-npm-info",
     "@tiangongkit/shared": "file:../../shared",
+    "@tiangongkit/package": "file:../../models/package",
     "fs-extra": "^10.0.0",
+    "npminstall": "^4.10.0",
+    "user-home": "^2.0.0",
     "inquirer": "^8.1.2"
   },
   "files": [

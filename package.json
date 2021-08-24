@@ -4,6 +4,7 @@
   "description": "personal cli",
   "main": "index.js",
   "scripts": {
+    "start": "lerna bootstrap",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
