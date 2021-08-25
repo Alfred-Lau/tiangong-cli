@@ -171,7 +171,7 @@ class InitCommand extends Command {
       {
         type: "input",
         name: "version",
-        default: "1.0.0",
+        default: "1.0.1",
         message: "请输入项目版本号",
       },
       {
