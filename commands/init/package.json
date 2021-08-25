@@ -1,6 +1,6 @@
 {
   "name": "@tiangongkit/init",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "tg-cli init command",
   "keywords": [
     "command",
@@ -15,11 +15,11 @@
     "test": "__tests__"
   },
   "dependencies": {
-    "@tiangongkit/command": "^0.0.4",
-    "@tiangongkit/get-npm-info": "^0.0.4",
-    "@tiangongkit/log": "^0.0.4",
-    "@tiangongkit/package": "^0.0.4",
-    "@tiangongkit/request": "^0.0.4",
+    "@tiangongkit/command": "^0.0.5",
+    "@tiangongkit/get-npm-info": "^0.0.5",
+    "@tiangongkit/log": "^0.0.5",
+    "@tiangongkit/package": "^0.0.5",
+    "@tiangongkit/request": "^0.0.5",
     "@tiangongkit/shared": "^0.0.4",
     "fs-extra": "^10.0.0",
     "inquirer": "^8.1.2",
