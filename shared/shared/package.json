@@ -1,13 +1,12 @@
 {
   "name": "@tiangongkit/shared",
   "version": "0.0.3",
-  "description": "tiangongkit shared ",
+  "description": "shared",
   "keywords": [
-    "shared",
-    "vlaue"
+    "shared"
   ],
   "author": "Alfred-Lau <jian.liu@icloud.com>",
-  "homepage": "https://github.com/Alfred-Lau/tiangong-cli/tree/main/core/shared#readme",
+  "homepage": "https://github.com/Alfred-Lau/tiangong-cli/tree/master/core/shared#readme",
   "license": "ISC",
   "main": "lib/index.js",
   "directories": {

@@ -20,7 +20,7 @@
     "@tiangongkit/log": "^0.0.3",
     "@tiangongkit/package": "^0.0.3",
     "@tiangongkit/request": "^0.0.3",
-    "@tiangongkit/shared": "file:../../shared",
+    "@tiangongkit/shared": "file:../../shared/shared",
     "fs-extra": "^10.0.0",
     "inquirer": "^8.1.2",
     "npminstall": "^4.10.0",
