@@ -4,7 +4,11 @@ const Command = require("@tiangongkit/command");
 const Package = require("@tiangongkit/package");
 const request = require("@tiangongkit/request");
 const { getDefaultRegistry } = require("@tiangongkit/get-npm-info");
-const { CLI_COMPONENT_TYPE, CLI_PROJECT_TYPE } = require("@tiangongkit/shared");
+const {
+  CLI_COMPONENT_TYPE,
+  CLI_PROJECT_TYPE,
+  CLI_Library_TYPE,
+} = require("@tiangongkit/shared");
 const inquirer = require("inquirer");
 const npminstall = require("npminstall");
 const userHome = require("user-home");
@@ -51,8 +55,13 @@ class InitCommand extends Command {
       storeDir,
     };
     const templateNpm = new Package(opts);
-    log.verbose("", templateNpm);
     try {
+      // star to download
+      if (await templateNpm.exists()) {
+        //  start to update
+      } else {
+        await templateNpm.install();
+      }
     } catch (error) {
       log.error(error.message);
     }
@@ -132,14 +141,14 @@ class InitCommand extends Command {
       choices: [
         { name: "项目", value: CLI_PROJECT_TYPE },
         { name: "组件", value: CLI_COMPONENT_TYPE },
+        { name: "npm 工具库", value: CLI_Library_TYPE },
       ],
     });
-
-    projectInfo.type = type;
-
     this.currentTemplate = this.templates.filter((template) => {
       return template.type === type.toUpperCase();
     });
+
+    projectInfo.type = type;
 
     const title = type === CLI_PROJECT_TYPE ? "项目" : "组件";
     const defaultNamePrompt = [
