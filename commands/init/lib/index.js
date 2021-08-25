@@ -7,7 +7,7 @@ const { getDefaultRegistry } = require("@tiangongkit/get-npm-info");
 const {
   CLI_COMPONENT_TYPE,
   CLI_PROJECT_TYPE,
-  CLI_Library_TYPE,
+  CLI_LIBRARY_TYPE,
 } = require("@tiangongkit/shared");
 const inquirer = require("inquirer");
 const npminstall = require("npminstall");
@@ -54,6 +54,7 @@ class InitCommand extends Command {
       version,
       storeDir,
     };
+    log.verbose("", opts, this.projectInfo);
     const templateNpm = new Package(opts);
     try {
       // star to download
@@ -125,7 +126,6 @@ class InitCommand extends Command {
         v
       );
     }
-
     let projectInfo = {};
     let isProjectNameValid = false;
     if (isValidName(this.projectName)) {
@@ -141,16 +141,23 @@ class InitCommand extends Command {
       choices: [
         { name: "项目", value: CLI_PROJECT_TYPE },
         { name: "组件", value: CLI_COMPONENT_TYPE },
-        { name: "npm 工具库", value: CLI_Library_TYPE },
+        { name: "npm 工具库", value: CLI_LIBRARY_TYPE },
       ],
     });
     this.currentTemplate = this.templates.filter((template) => {
       return template.type === type.toUpperCase();
     });
 
+    projectInfo = { ...projectInfo, ...this.currentTemplate[0] };
+
     projectInfo.type = type;
 
-    const title = type === CLI_PROJECT_TYPE ? "项目" : "组件";
+    const title =
+      type === CLI_PROJECT_TYPE
+        ? "项目"
+        : type === CLI_LIBRARY_TYPE
+        ? "npm 库"
+        : "组件";
     const defaultNamePrompt = [
       {
         type: "input",
@@ -205,8 +212,31 @@ class InitCommand extends Command {
           ...askedProjectInfo,
         };
       }
+    } else if (type === CLI_LIBRARY_TYPE) {
+      // 初始化项目Lib问答
+      if (this.projectName) {
+        // 项目名称存在，直接使用
+        projectInfo.title = this.projectName;
+
+        const askedProjectInfo = await inquirer.prompt(defaultPrompt);
+
+        projectInfo = {
+          title,
+          ...projectInfo,
+          ...askedProjectInfo,
+        };
+      } else {
+        // 项目名称不存在，提示输入
+        const projectPromptWithName = defaultNamePrompt.concat(defaultPrompt);
+
+        const askedProjectInfo = await inquirer.prompt(projectPromptWithName);
+
+        projectInfo = {
+          ...projectInfo,
+          ...askedProjectInfo,
+        };
+      }
     } else {
-      // 初始化组件问答
     }
     return projectInfo;
   }
