@@ -1,6 +1,6 @@
 {
   "name": "@tiangongkit/command",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "command base class",
   "keywords": [
     "command"
@@ -27,7 +27,7 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {
-    "@tiangongkit/log": "^0.0.6",
+    "@tiangongkit/log": "^0.0.7",
     "colors": "^1.4.0",
     "semver": "^7.3.4"
   },
