@@ -1,6 +1,6 @@
 {
   "name": "@tiangongkit/get-npm-info",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "get npm info",
   "keywords": [
     "npm"
