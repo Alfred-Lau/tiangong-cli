@@ -22,8 +22,6 @@ function checkPkgVersion() {
   log.verbose("当前软件版本", pkg.version);
 }
 
-function checkNodeVersion() {}
-
 function checkRoot() {
   const rootCheck = require("root-check");
   rootCheck();
@@ -142,7 +140,6 @@ function registryCommand() {
 
 async function prepare() {
   checkPkgVersion();
-  // checkNodeVersion();
   checkRoot();
   checkUserHome();
   checkDefaultEnv();

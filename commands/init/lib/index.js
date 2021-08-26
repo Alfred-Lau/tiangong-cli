@@ -3,6 +3,8 @@ const log = require("@tiangongkit/log");
 const Command = require("@tiangongkit/command");
 const Package = require("@tiangongkit/package");
 const request = require("@tiangongkit/request");
+const { execute } = require("@tiangongkit/utils");
+
 const { getDefaultRegistry } = require("@tiangongkit/get-npm-info");
 const {
   CLI_COMPONENT_TYPE,
@@ -10,7 +12,8 @@ const {
   CLI_LIBRARY_TYPE,
 } = require("@tiangongkit/shared");
 const inquirer = require("inquirer");
-const npminstall = require("npminstall");
+const ejs = require("ejs");
+const glob = require("glob");
 const userHome = require("user-home");
 const fs = require("fs");
 const fse = require("fs-extra");
@@ -21,6 +24,13 @@ class InitCommand extends Command {
     // 开始初始化
     this.projectName = this._argv[0] || "";
     this.force = !!this._argv[1].force;
+    this.targetPath = path.resolve(userHome, ".tg_cli", "template");
+    this.storeDir = path.resolve(
+      userHome,
+      ".tg_cli",
+      "template",
+      "node_modules"
+    );
   }
 
   async exec() {
@@ -31,22 +41,50 @@ class InitCommand extends Command {
       this.projectInfo = projectInfo;
       // 2.  进行模板下载
       await this.downloadTemplates();
-      // 3. 进行模板安装到指定新建项目
+      // 3. 进行模板安装到指定新建项目【开始 ejs 渲染项目】
+      await this.renderProjectForLibrary(projectInfo);
+      // 4. 安装项目依赖
+      await this.installProjectDeps(projectInfo);
+      // 5. 启动项目
+      await this.start(projectInfo);
     } catch (e) {
       log.error("", e.message);
+    }
+  }
+
+  async start(info) {
+    const { startCmd = ["npm", ["run", "dev"]], title } = info;
+    const startPath = path.resolve(process.cwd(), title);
+
+    startCmd.push({ cwd: startPath, stdio: "inherit" });
+    try {
+      log.verbose("start", startCmd);
+      const child = execute(startCmd);
+    } catch (error) {
+      log.error("start deps", error);
+    }
+  }
+
+  async installProjectDeps(info) {
+    const {
+      installCmd = ["npm", ["install", `--registry=${getDefaultRegistry()}`]],
+      title,
+    } = info;
+    const installPath = path.resolve(process.cwd(), title);
+    installCmd.push({ cwd: installPath, stdio: "inherit" });
+
+    try {
+      const child = execute(installCmd);
+    } catch (error) {
+      log.error("install deps", error);
     }
   }
 
   async downloadTemplates() {
     const { projectName, version } = this.projectInfo;
     // 生成模板存储路径 和 模板缓存路径
-    const targetPath = path.resolve(userHome, ".tg_cli", "template");
-    const storeDir = path.resolve(
-      userHome,
-      ".tg_cli",
-      "template",
-      "node_modules"
-    );
+    const targetPath = this.targetPath;
+    const storeDir = this.storeDir;
 
     const opts = {
       targetPath,
@@ -54,20 +92,64 @@ class InitCommand extends Command {
       version,
       storeDir,
     };
-    log.verbose("", opts, this.projectInfo);
     const templateNpm = new Package(opts);
     try {
       // star to download
       if (await templateNpm.exists()) {
         //  start to update
+        await templateNpm.update();
       } else {
         await templateNpm.install();
+        log.verbose("", "更新程序成功");
       }
     } catch (error) {
       log.error(error.message);
     }
   }
 
+  async renderProjectForLibrary(info) {
+    const { projectName, title } = info;
+    // 输出路径
+    const currentCwd = process.cwd();
+    // 生成模板存储路径 和 模板缓存路径
+    const globPathPattern = path.resolve(this.storeDir, projectName);
+    return new Promise((resolve, reject) => {
+      glob(
+        `**/*`,
+        {
+          cwd: globPathPattern,
+          ignore: ["node_modules/**", "src"],
+          nodir: true,
+        },
+        (err, files) => {
+          if (!err) {
+            //  开始渲染页面
+            Promise.all(
+              files.map((file) => {
+                const source = path.resolve(globPathPattern, file);
+                const target = path.resolve(currentCwd, title, file);
+                return new Promise((resolve2, reject2) => {
+                  ejs.renderFile(source, info, {}, (err, result) => {
+                    if (!err) {
+                      fse.ensureFileSync(target);
+                      fs.writeFileSync(target, result, { encoding: "utf-8" });
+                      resolve2(result);
+                    } else {
+                      reject2(err);
+                    }
+                  });
+                });
+              })
+            )
+              .then(() => resolve())
+              .catch((err) => reject(err));
+          } else {
+            reject(err);
+          }
+        }
+      );
+    });
+  }
   /**
    * 获取项目模板列表
    *

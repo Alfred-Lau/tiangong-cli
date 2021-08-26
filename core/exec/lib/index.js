@@ -2,8 +2,8 @@
 
 const Package = require("@tiangongkit/package");
 const log = require("@tiangongkit/log");
+const { execute } = require("@tiangongkit/utils");
 const path = require("path");
-const cp = require("child_process");
 
 // 命令和包的映射
 const SETTINGS = {
@@ -14,23 +14,7 @@ const SETTINGS = {
 
 const CACHE_DIR = "dependencies";
 
-/**
- *多平台兼容处理
- *
- * @param {*} cmd 运行命令
- * @param {*} argv 运行参数
- * @param {*} opt 运行选项
- * @return {*}
- */
-function spawn(cmd, argv, opt) {
-  const isWin32 = process.platform === "win32";
-  const specifiedCmd = isWin32 ? "cmd" : cmd;
-  const specifiedArgs = isWin32 ? ["/c", cmd, ...argv] : argv;
-
-  return cp.spawn(specifiedCmd, specifiedArgs, opt);
-}
-
-async function exec() {
+async function ute() {
   // 1， 拿到 targetPath ,转化为 modulePath
   let targetPath = process.env.CLI_TARGET_PATH;
   let homePath = process.env.CLI_HOME_PATH;
@@ -97,22 +81,16 @@ async function exec() {
     const code = `require('${entryFilePath}').call(null, ${JSON.stringify(
       args
     )})`;
-    const child = spawn("node", ["-e", code], {
-      // 子进程的 stdio 的设置
-      cwd: process.cwd(),
-      // 把父进程的 io 句柄给到 子进程
-      stdio: "inherit",
-    });
-
-    //  子进程本身的设置
-    child.on("error", (e) => {
-      log.error(e);
-      process.exit(1);
-    });
-    child.on("exit", (e) => {
-      log.verbose("命令执行成功:" + e);
-      process.exit(e);
-    });
+    const child = execute([
+      "node",
+      ["-e", code],
+      {
+        // 子进程的 stdio 的设置
+        cwd: process.cwd(),
+        // 把父进程的 io 句柄给到 子进程
+        stdio: "inherit",
+      },
+    ]);
   } catch (error) {
     log.error(error.message);
   }

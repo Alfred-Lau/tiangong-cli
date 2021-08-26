@@ -25,7 +25,8 @@
   },
   "dependencies": {
     "@tiangongkit/log": "^0.0.8",
-    "@tiangongkit/package": "^0.0.8"
+    "@tiangongkit/package": "^0.0.8",
+    "@tiangongkit/utils": "^0.0.8"
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1"

@@ -2,9 +2,9 @@
 const axios = require("axios").default;
 
 const baseURL =
-  process.env.NODE_ENV === "prod"
-    ? "http://139.129.44.2:8082/"
-    : "http://localhost:3000";
+  process.env.LOG_LEVEL === "verbose"
+    ? "http://localhost:3000"
+    : "http://139.129.44.2:8082/";
 
 const request = axios.create({
   baseURL,
