@@ -1,6 +1,6 @@
 {
   "name": "@tiangongkit/utils",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "utils",
   "keywords": [
     "utils"
@@ -20,7 +20,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@tiangongkit/log": "^0.0.8"
+    "@tiangongkit/log": "^0.0.9"
   },
   "repository": {
     "type": "git",
