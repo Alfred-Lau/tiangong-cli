@@ -14,7 +14,7 @@ const SETTINGS = {
 
 const CACHE_DIR = "dependencies";
 
-async function ute() {
+async function exec() {
   // 1， 拿到 targetPath ,转化为 modulePath
   let targetPath = process.env.CLI_TARGET_PATH;
   let homePath = process.env.CLI_HOME_PATH;
