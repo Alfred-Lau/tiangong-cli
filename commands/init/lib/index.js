@@ -55,11 +55,16 @@ class InitCommand extends Command {
   async start(info) {
     const { startCmd = ["npm", ["run", "dev"]], title } = info;
     const startPath = path.resolve(process.cwd(), title);
+    const envPath = `${process.env.PATH}:${startPath}/node_modules/.bin`;
+    const { PATH, ...restEnv } = process.env;
 
-    startCmd.push({ cwd: startPath, stdio: "inherit" });
+    startCmd.push({
+      cwd: startPath,
+      stdio: "inherit",
+      env: { ...restEnv, PATH: envPath },
+    });
     try {
-      log.verbose("start", startCmd);
-      const child = execute(startCmd);
+      await execute(startCmd);
     } catch (error) {
       log.error("start deps", error);
     }
@@ -74,7 +79,7 @@ class InitCommand extends Command {
     installCmd.push({ cwd: installPath, stdio: "inherit" });
 
     try {
-      const child = execute(installCmd);
+      await execute(installCmd);
     } catch (error) {
       log.error("install deps", error);
     }

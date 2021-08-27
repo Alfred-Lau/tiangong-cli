@@ -25,19 +25,19 @@ function isObject(o) {
   return Object.prototype.toString.call(o) === "[object Object]";
 }
 
+// 把一个同步函数改造成异步的方式，就是返回一个 promise ，然后await 它
 function execute(params) {
-  const child = spawn(...params);
+  return new Promise(function (resolve, reject) {
+    const child = spawn(...params);
 
-  //  子进程本身的设置
-  child.on("error", (e) => {
-    log.error(e);
-    process.exit(1);
+    //  子进程本身的设置
+    child.on("error", (e) => {
+      reject(e);
+    });
+    child.on("exit", (e) => {
+      resolve(e);
+    });
   });
-  child.on("exit", (e) => {
-    log.verbose("命令执行成功:" + e);
-    process.exit(e);
-  });
-  return child;
 }
 
 module.exports = {

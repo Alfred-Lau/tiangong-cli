@@ -1,6 +1,6 @@
 # `@tiangongkit/init`
 
-> TODO: description
+>
 
 ## Usage
 
