@@ -1,6 +1,6 @@
 {
   "name": "@tiangongkit/exec",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "tg-cli exec",
   "keywords": [
     "exec"
@@ -24,9 +24,9 @@
     "url": "git+https://github.com/Alfred-Lau/tiangong-cli.git"
   },
   "dependencies": {
-    "@tiangongkit/log": "^0.0.9",
-    "@tiangongkit/package": "^0.0.9",
-    "@tiangongkit/utils": "^0.0.9"
+    "@tiangongkit/log": "^0.0.10",
+    "@tiangongkit/package": "^0.0.10",
+    "@tiangongkit/utils": "^0.0.10"
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1"
