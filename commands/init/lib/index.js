@@ -72,10 +72,7 @@ class InitCommand extends Command {
 
   async installProjectDeps(info) {
     const {
-      installCmd = [
-        "npm",
-        ["install", `--registry=${getDefaultRegistry(true)}`],
-      ],
+      installCmd = ["npm", ["install", `--registry=${getDefaultRegistry()}`]],
       title,
     } = info;
     const installPath = path.resolve(process.cwd(), title);
