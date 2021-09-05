@@ -1,6 +1,6 @@
 {
   "name": "@tiangongkit/cli",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "cli",
   "author": "Alfred-Lau <jian.liu@icloud.com>",
   "homepage": "https://github.com/Alfred-Lau/tiangong-cli/tree/master/core/cli#readme",
@@ -30,10 +30,10 @@
     "url": "https://github.com/Alfred-Lau/tiangong-cli/issues"
   },
   "dependencies": {
-    "@tiangongkit/exec": "^0.0.13",
-    "@tiangongkit/get-npm-info": "^0.0.13",
-    "@tiangongkit/init": "^0.0.13",
-    "@tiangongkit/log": "^0.0.13",
+    "@tiangongkit/exec": "^0.0.14",
+    "@tiangongkit/get-npm-info": "^0.0.14",
+    "@tiangongkit/init": "^0.0.14",
+    "@tiangongkit/log": "^0.0.14",
     "colors": "^1.4.0",
     "commander": "^7.1.0",
     "dotenv": "^8.2.0",
