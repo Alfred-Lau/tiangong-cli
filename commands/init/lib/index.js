@@ -72,7 +72,10 @@ class InitCommand extends Command {
 
   async installProjectDeps(info) {
     const {
-      installCmd = ["npm", ["install", `--registry=${getDefaultRegistry()}`]],
+      installCmd = [
+        "npm",
+        ["install", `--registry=${getDefaultRegistry(false)}`],
+      ],
       title,
     } = info;
     const installPath = path.resolve(process.cwd(), title);
@@ -117,7 +120,11 @@ class InitCommand extends Command {
     // 输出路径
     const currentCwd = process.cwd();
     // 生成模板存储路径 和 模板缓存路径
-    const globPathPattern = path.resolve(this.storeDir, projectName);
+    const globPathPattern = path.resolve(
+      this.storeDir,
+      projectName,
+      "template"
+    );
     return new Promise((resolve, reject) => {
       glob(
         `**/*`,
@@ -258,7 +265,7 @@ class InitCommand extends Command {
       {
         type: "input",
         name: "version",
-        default: "1.0.1",
+        default: "1.0.4",
         message: "请输入项目版本号",
       },
       {
