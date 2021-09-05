@@ -8,7 +8,7 @@ const path = require("path");
 // 命令和包的映射
 const SETTINGS = {
   init: "@tiangongkit/init",
-  publish: "@tiangongkit/init",
+  publish: "@tiangongkit/publish",
   start: "@tiangongkit/init",
 };
 

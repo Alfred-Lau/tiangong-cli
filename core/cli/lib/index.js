@@ -102,6 +102,8 @@ function registryCommand() {
     .option("-f, --force", "是否强制初始化项目")
     .action(exec);
 
+  program.command("publish").action(exec);
+
   // second 设置事件监听
   program.on("option:debug", function () {
     // 重点：发现和书上不太一样的时候，要寻根溯源到文档，更新的用法
