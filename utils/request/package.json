@@ -1,6 +1,6 @@
 {
   "name": "@tiangongkit/request",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "request module",
   "keywords": [
     "request"

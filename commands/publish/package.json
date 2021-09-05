@@ -1,6 +1,6 @@
 {
   "name": "@tiangongkit/publish",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "publish command",
   "keywords": [
     "publish"
@@ -17,8 +17,8 @@
     "lib"
   ],
   "dependencies": {
-    "@tiangongkit/command": "^0.0.15",
-    "@tiangongkit/log": "^0.0.15"
+    "@tiangongkit/command": "^0.0.16",
+    "@tiangongkit/log": "^0.0.16"
   },
   "publishConfig": {
     "access": "public"
