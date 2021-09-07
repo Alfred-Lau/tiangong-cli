@@ -73,8 +73,7 @@ function creatDefaultEnvConfig() {
  */
 async function checkGlobalUpdate() {
   const currentVersion = pkg.version;
-  // const name = pkg.name;
-  const name = "colors";
+  const name = pkg.name;
 
   const latestVersion = await getLatestVersion(name, currentVersion);
   if (semver.gt(latestVersion, currentVersion)) {
@@ -155,10 +154,6 @@ async function cli(argv) {
     registryCommand();
   } catch (error) {
     // 隐藏堆栈信息，自定义
-    if (this.opts().debug) {
-      log.error(e);
-    } else {
-      log.error(error.message);
-    }
+    log.error("", error);
   }
 }

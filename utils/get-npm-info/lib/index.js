@@ -18,7 +18,7 @@ const semver = require("semver");
  * @param {*} name npm 包名称
  * @param {*} registry 允许自定义repo
  */
-function getNpmInfo(name, registry) {
+async function getNpmInfo(name, registry) {
   if (!name) {
     return null;
   }
@@ -26,17 +26,16 @@ function getNpmInfo(name, registry) {
   let registryUrl = registry || getDefaultRegistry();
   const url = urlJoin(registryUrl, name);
 
-  return axios
-    .get(url)
-    .then((resp) => {
-      if (resp.status === 200) {
-        return resp.data;
-      }
-      return null;
-    })
-    .catch((err) => {
-      return Promise.reject(err);
-    });
+  try {
+    const resp = await axios.get(url);
+    if (resp.status === 200) {
+      return resp.data;
+    }
+    return null;
+  } catch (e) {
+    console.error(e);
+    return Promise.reject(e);
+  }
 }
 
 function getDefaultRegistry(isOrigin = true) {
@@ -59,7 +58,7 @@ async function getSemverVersions(npmName, currentVersion, registry) {
       return (
         Object.keys(info.versions)
           // 直接写 运算符号
-          .filter((version) => semver.satisfies(version, `>${currentVersion}`))
+          .filter((version) => semver.satisfies(version, `>=${currentVersion}`))
           .sort((a, b) => semver.gt(b, a))
       );
     }
@@ -84,7 +83,7 @@ async function getNpmLatestVersion(npmName) {
   try {
     const info = await getNpmInfo(npmName);
     if (info) {
-      return Object.keys(info.versions).sort((a, b) => a > b)[0];
+      return Object.keys(info.versions).sort((a, b) => semver.gt(b, a))[0];
     }
   } catch (error) {}
 }
