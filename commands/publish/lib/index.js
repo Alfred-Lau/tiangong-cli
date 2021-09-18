@@ -17,6 +17,10 @@ class PublishCommand extends Command {
     }
     const { name, version, scripts } = require(pkgPath);
     if (!name || !version || !scripts.build) {
+      log.error(
+        "",
+        "package.json信息不全，请检查是否存在name、version和scripts（需提供build命令）！"
+      );
       throw new Error(
         "package.json信息不全，请检查是否存在name、version和scripts（需提供build命令）！"
       );
@@ -27,11 +31,19 @@ class PublishCommand extends Command {
       version,
       dir: projectPath,
     };
+
+    log.info("", this.projectInfo);
   }
-  init() {
-    this.prepare();
+  init() {}
+  async exec() {
+    try {
+      const startTime = new Date().getTime();
+      // 1. 执行预检查
+      this.prepare();
+      const endTime = new Date().getTime();
+      log.info("", `本次发布耗时：${(endTime - startTime) / 1000} s`);
+    } catch (e) {}
   }
-  async exec() {}
 }
 
 function publish(args) {

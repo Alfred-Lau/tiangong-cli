@@ -7,3 +7,8 @@ if (importLocal(__filename)) {
 } else {
   require("../lib")(process.argv.slice(2));
 }
+
+process.on("uncaughtException", function (err) {
+  // handle the error safely
+  console.log(err);
+});
