@@ -1,12 +1,12 @@
 {
-  "name": "@tiangongkit/publish",
+  "name": "@tiangongkit/git",
   "version": "0.0.16",
-  "description": "publish command",
+  "description": "git",
   "keywords": [
-    "publish"
+    "git"
   ],
   "author": "Alfred-Lau <jian.liu@icloud.com>",
-  "homepage": "https://github.com/Alfred-Lau/tiangong-cli/tree/master/commands/publish#readme",
+  "homepage": "https://github.com/Alfred-Lau/tiangong-cli/tree/master/models/git#readme",
   "license": "ISC",
   "main": "lib/index.js",
   "directories": {
@@ -16,12 +16,6 @@
   "files": [
     "lib"
   ],
-  "dependencies": {
-    "@tiangongkit/command": "^0.0.16",
-    "@tiangongkit/log": "^0.0.16",
-    "@tiangongkit/git": "file:../../models/git",
-    "pkg-dir": "^5.0.0"
-  },
   "publishConfig": {
     "access": "public"
   },

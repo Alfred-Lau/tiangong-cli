@@ -4,6 +4,7 @@ const Command = require("@tiangongkit/command");
 const pkgDir = require("pkg-dir").sync;
 const path = require("path");
 const fs = require("fs");
+const Git = require("@tiangongkit/git");
 
 class PublishCommand extends Command {
   prepare() {
@@ -40,6 +41,10 @@ class PublishCommand extends Command {
       const startTime = new Date().getTime();
       // 1. 执行预检查
       this.prepare();
+      // 2. gitflow 预检查
+      const git = new Git();
+      git.init({});
+      // 3. 云构建
       const endTime = new Date().getTime();
       log.info("", `本次发布耗时：${(endTime - startTime) / 1000} s`);
     } catch (e) {}
