@@ -32,17 +32,17 @@ class PublishCommand extends Command {
       version,
       dir: projectPath,
     };
-
-    log.info("", this.projectInfo);
   }
-  init() {}
+  init() {
+    // 1. 初始化处理参数
+  }
   async exec() {
     try {
       const startTime = new Date().getTime();
       // 1. 执行预检查
       this.prepare();
       // 2. gitflow 预检查
-      const git = new Git();
+      const git = new Git(this.projectInfo);
       git.init({});
       // 3. 云构建
       const endTime = new Date().getTime();

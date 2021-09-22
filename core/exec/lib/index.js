@@ -25,6 +25,8 @@ async function exec() {
   const version = "latest";
   const name = SETTINGS[arguments[arguments.length - 1].name()];
 
+  log.info("", name, targetPath);
+
   if (!targetPath) {
     // 生成缓存路径【绝对路径】
     targetPath = path.resolve(homePath, CACHE_DIR);

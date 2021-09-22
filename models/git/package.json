@@ -28,5 +28,9 @@
   },
   "bugs": {
     "url": "https://github.com/Alfred-Lau/tiangong-cli/issues"
+  },
+  "dependencies": {
+    "simple-git": "^2.45.1",
+    "@tiangongkit/log": "file:../../utils/log"
   }
 }

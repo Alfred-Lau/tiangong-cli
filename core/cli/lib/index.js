@@ -106,8 +106,8 @@ function registryCommand() {
   // second 设置事件监听
   program.on("option:debug", function () {
     // 重点：发现和书上不太一样的时候，要寻根溯源到文档，更新的用法
-    console.log(this);
-    if (this.opts().debug) {
+
+    if (program.opts().debug) {
       process.env.LOG_LEVEL = "verbose";
     } else {
       process.env.LOG_LEVEL = "info";
@@ -118,7 +118,8 @@ function registryCommand() {
   });
 
   program.on("option:targetPath", function () {
-    const target_path = this.opts().targetPath;
+    log.info("", "ddd");
+    const target_path = program.opts().targetPath;
     if (target_path) {
       process.env.CLI_TARGET_PATH = target_path;
     }
