@@ -46,10 +46,14 @@ function readFile(file, options = {}) {
     throw new Error("需要读取的文件不存在");
   }
   const content = fse.readFileSync(file, options);
-  if (options.toJson) {
-    return content.toJSON();
-  } else {
-    return content.toString();
+  try {
+    if (options.toJson) {
+      return content.toJSON();
+    } else {
+      return content.toString();
+    }
+  } catch (error) {
+    console.log(error.message);
   }
 }
 

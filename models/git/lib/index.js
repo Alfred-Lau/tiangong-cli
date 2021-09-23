@@ -46,7 +46,7 @@ class Git {
     const gitServerPath = this.createPath(GIT_SERVER_FILE);
     const gitServerString = readFile(gitServerPath);
     if (gitServerString) {
-      console.log("gitServerString", gitServerString);
+      log.info("选择托管的 Git 平台是：", gitServerString);
     } else {
       const selectedGitServer = (
         await inquirer.prompt({
