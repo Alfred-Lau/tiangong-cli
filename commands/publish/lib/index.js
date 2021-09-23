@@ -43,11 +43,13 @@ class PublishCommand extends Command {
       this.prepare();
       // 2. gitflow 预检查
       const git = new Git(this.projectInfo);
-      git.init({});
+      await git.init({});
       // 3. 云构建
       const endTime = new Date().getTime();
       log.info("", `本次发布耗时：${(endTime - startTime) / 1000} s`);
-    } catch (e) {}
+    } catch (e) {
+      log.error(e.message);
+    }
   }
 }
 

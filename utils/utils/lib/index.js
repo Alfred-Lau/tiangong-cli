@@ -1,6 +1,7 @@
 "use strict";
 const log = require("@tiangongkit/log");
 const cp = require("child_process");
+const fse = require("fs-extra");
 
 /**
  *多平台兼容处理
@@ -39,8 +40,26 @@ function execute(params) {
     });
   });
 }
+function readFile(file, options = {}) {
+  fse.ensureFileSync(file);
+  if (!fse.existsSync(file)) {
+    throw new Error("需要读取的文件不存在");
+  }
+  const content = fse.readFileSync(file, options);
+  if (options.toJson) {
+    return content.toJSON();
+  } else {
+    return content.toString();
+  }
+}
 
+function writeFile(file, data, { rewrite = true }) {
+  fse.ensureFileSync(file);
+  fse.writeFileSync(file, data);
+}
 module.exports = {
   isObject,
   execute,
+  readFile,
+  writeFile,
 };
