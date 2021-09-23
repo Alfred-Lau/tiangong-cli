@@ -53,7 +53,7 @@ function readFile(file, options = {}) {
   }
 }
 
-function writeFile(file, data, { rewrite = true }) {
+function writeFile(file, data, { rewrite = true } = {}) {
   fse.ensureFileSync(file);
   fse.writeFileSync(file, data);
 }

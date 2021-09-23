@@ -30,9 +30,10 @@
     "url": "https://github.com/Alfred-Lau/tiangong-cli/issues"
   },
   "dependencies": {
-    "@tiangongkit/log": "file:../../utils/log",
     "@tiangkit/utils": "file:../../utils/utils",
+    "@tiangongkit/log": "file:../../utils/log",
     "fs-extra": "^10.0.0",
+    "inquirer": "^8.1.5",
     "simple-git": "^2.45.1",
     "user-home": "^3.0.0"
   }

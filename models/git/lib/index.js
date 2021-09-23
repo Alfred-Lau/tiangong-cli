@@ -44,9 +44,7 @@ class Git {
 
   async checkGitServer() {
     const gitServerPath = this.createPath(GIT_SERVER_FILE);
-    log.info("gitServerPath", gitServerPath);
     const gitServerString = readFile(gitServerPath);
-    console.log("gitServerString", gitServerString);
     if (gitServerString) {
       console.log("gitServerString", gitServerString);
     } else {
@@ -62,6 +60,7 @@ class Git {
           ],
         })
       ).selectedGitServer;
+      log.info("", `${selectedGitServer} ---> ${gitServerPath}`);
       writeFile(gitServerPath, selectedGitServer);
     }
   }
