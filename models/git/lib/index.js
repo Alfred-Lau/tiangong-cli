@@ -7,6 +7,8 @@ const fse = require("fs-extra");
 const inquirer = require("inquirer");
 const log = require("@tiangongkit/log");
 const { readFile, writeFile } = require("@tiangongkit/utils");
+const GithubServer = require("./Github");
+const GiteeServer = require("./Gitee");
 
 const DEFAULT_CLI_HOME = ".tg_cli";
 const GIT_SERVER_PATH = ".git";
@@ -21,12 +23,6 @@ class Git {
     // 配置选项
     this.refreshServer = refreshServer;
   }
-  async prepare(options) {
-    //  1. 检查缓存主目录
-    this.checkHomePath();
-    await this.checkGitServer(options);
-  }
-
   checkHomePath() {
     if (!this.homePath) {
       if (process.env.CLI_HOME_PATH) {
@@ -40,13 +36,17 @@ class Git {
       throw new Error("用户主目录获取失败");
     }
   }
-  async init(options) {
-    await this.prepare(options);
+
+  createPath(file) {
+    return path.resolve(this.homePath, GIT_SERVER_PATH, file);
   }
 
   async checkGitServer(options) {
     const gitServerPath = this.createPath(GIT_SERVER_FILE);
     const gitServerString = readFile(gitServerPath);
+
+    log.info("", gitServerPath);
+
     if (!gitServerString || this.refreshServer) {
       const selectedGitServer = (
         await inquirer.prompt({
@@ -61,14 +61,43 @@ class Git {
         })
       ).selectedGitServer;
       log.info("", `${selectedGitServer} ---> ${gitServerPath}`);
+      this.gitServerString = selectedGitServer;
       writeFile(gitServerPath, selectedGitServer);
     } else {
+      this.gitServerString = gitServerString;
       log.info("选择托管的 Git 平台是：", gitServerString);
     }
   }
 
-  createPath(file) {
-    return path.resolve(this.homePath, GIT_SERVER_PATH, file);
+  createGitServer(server) {
+    let gitserver = undefined;
+    switch (server) {
+      case "github":
+        gitserver = new GithubServer(server);
+        break;
+      case "gitee":
+        gitserver = new GiteeServer(server);
+        break;
+      default:
+        throw new Error("请选择合适的 git 发布平台");
+    }
+
+    return gitserver;
+  }
+
+  async prepare(options) {
+    //  1. 检查缓存主目录
+    try {
+      this.checkHomePath();
+      await this.checkGitServer(options);
+      this.gitServer = this.createGitServer(this.gitServerString);
+    } catch (error) {
+      log.error("", error.message);
+    }
+  }
+
+  async init(options) {
+    await this.prepare(options);
   }
 }
 module.exports = Git;
