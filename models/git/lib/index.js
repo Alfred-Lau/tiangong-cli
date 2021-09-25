@@ -12,17 +12,19 @@ const DEFAULT_CLI_HOME = ".tg_cli";
 const GIT_SERVER_PATH = ".git";
 const GIT_SERVER_FILE = ".git_server";
 class Git {
-  constructor({ name, version, dir }) {
+  constructor({ name, version, dir }, { refreshServer }) {
     this.name = name;
     this.version = version;
     this.dir = dir;
     this.git = simpleGit(dir);
     this.gitServer = null;
+    // 配置选项
+    this.refreshServer = refreshServer;
   }
-  async prepare() {
+  async prepare(options) {
     //  1. 检查缓存主目录
     this.checkHomePath();
-    await this.checkGitServer();
+    await this.checkGitServer(options);
   }
 
   checkHomePath() {
@@ -39,15 +41,13 @@ class Git {
     }
   }
   async init(options) {
-    await this.prepare();
+    await this.prepare(options);
   }
 
-  async checkGitServer() {
+  async checkGitServer(options) {
     const gitServerPath = this.createPath(GIT_SERVER_FILE);
     const gitServerString = readFile(gitServerPath);
-    if (gitServerString) {
-      log.info("选择托管的 Git 平台是：", gitServerString);
-    } else {
+    if (!gitServerString || this.refreshServer) {
       const selectedGitServer = (
         await inquirer.prompt({
           type: "list",
@@ -62,6 +62,8 @@ class Git {
       ).selectedGitServer;
       log.info("", `${selectedGitServer} ---> ${gitServerPath}`);
       writeFile(gitServerPath, selectedGitServer);
+    } else {
+      log.info("选择托管的 Git 平台是：", gitServerString);
     }
   }
 

@@ -62,8 +62,9 @@ class Command {
   }
 
   initArgs() {
-    this._cmd = this._argv[this._argv.length - 1];
+    this._rawArg = this._argv;
     this._argv = this._argv.slice(0, this._argv.length - 1);
+    this._options = this._argv[0];
   }
 }
 

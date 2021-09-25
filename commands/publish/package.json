@@ -17,7 +17,7 @@
     "lib"
   ],
   "dependencies": {
-    "@tiangongkit/command": "^0.0.16",
+    "@tiangongkit/command": "file:../../models/command",
     "@tiangongkit/log": "^0.0.16",
     "@tiangongkit/git": "file:../../models/git",
     "pkg-dir": "^5.0.0"

@@ -33,8 +33,12 @@ class PublishCommand extends Command {
       dir: projectPath,
     };
   }
+
   init() {
     // 1. 初始化处理参数
+    // 是否强制刷新服务器文件
+    this.options = { refreshServer: this._options.refreshServer || false };
+    // this.publishOpts = this._options;
   }
   async exec() {
     try {
@@ -42,8 +46,8 @@ class PublishCommand extends Command {
       // 1. 执行预检查
       this.prepare();
       // 2. gitflow 预检查
-      const git = new Git(this.projectInfo);
-      await git.init({});
+      const git = new Git(this.projectInfo, this.options);
+      await git.init({ rewrite: this.refreshServer });
       // 3. 云构建
       const endTime = new Date().getTime();
       log.info("", `本次发布耗时：${(endTime - startTime) / 1000} s`);

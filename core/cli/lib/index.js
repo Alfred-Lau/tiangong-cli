@@ -102,7 +102,7 @@ function registryCommand() {
     .action(exec);
   program
     .command("publish")
-    .option("-f, --refresh", "强制更新远程git仓库")
+    .option("-f, --refreshServer", "强制更新远程git仓库")
     .action(exec);
 
   // second 设置事件监听
@@ -120,7 +120,6 @@ function registryCommand() {
   });
 
   program.on("option:targetPath", function () {
-    log.info("", "ddd");
     const target_path = program.opts().targetPath;
     if (target_path) {
       process.env.CLI_TARGET_PATH = target_path;
