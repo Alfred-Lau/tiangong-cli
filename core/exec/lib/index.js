@@ -59,8 +59,6 @@ async function exec() {
     pkg = new Package(opts);
   }
 
-  // TODO:3. 获取入口文件  Package.getRootFile
-
   const entryFilePath = pkg.getEntryFilePath();
   // 这一段很精彩
   try {

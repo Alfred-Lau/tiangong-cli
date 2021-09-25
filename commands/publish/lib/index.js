@@ -37,7 +37,10 @@ class PublishCommand extends Command {
   init() {
     // 1. 初始化处理参数
     // 是否强制刷新服务器文件
-    this.options = { refreshServer: this._options.refreshServer || false };
+    this.options = {
+      refreshServer: this._options.refreshServer || false,
+      refreshToken: this._options.refreshToken || false,
+    };
     // this.publishOpts = this._options;
   }
   async exec() {

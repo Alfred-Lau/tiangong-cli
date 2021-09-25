@@ -5,6 +5,7 @@ const path = require("path");
 const userHome = require("user-home");
 const fse = require("fs-extra");
 const inquirer = require("inquirer");
+const terminalLink = require("terminal-link");
 const log = require("@tiangongkit/log");
 const { readFile, writeFile } = require("@tiangongkit/utils");
 const GithubServer = require("./Github");
@@ -13,8 +14,9 @@ const GiteeServer = require("./Gitee");
 const DEFAULT_CLI_HOME = ".tg_cli";
 const GIT_SERVER_PATH = ".git";
 const GIT_SERVER_FILE = ".git_server";
+const GIT_TOKEN_FILE = ".git_token";
 class Git {
-  constructor({ name, version, dir }, { refreshServer }) {
+  constructor({ name, version, dir }, { refreshServer, refreshToken }) {
     this.name = name;
     this.version = version;
     this.dir = dir;
@@ -22,6 +24,7 @@ class Git {
     this.gitServer = null;
     // 配置选项
     this.refreshServer = refreshServer;
+    this.refreshToken = refreshToken;
   }
   checkHomePath() {
     if (!this.homePath) {
@@ -85,12 +88,51 @@ class Git {
     return gitserver;
   }
 
+  /**
+   *检查 token 是否存在
+   *
+   * @param {*} optiosn
+   * @memberof Git
+   */
+  async checkServerToken(optiosn) {
+    const gitServerTokenPath = this.createPath(GIT_TOKEN_FILE);
+    const gitToken = readFile(gitServerTokenPath);
+
+    log.info("", gitServerTokenPath);
+
+    if (!gitToken || this.refreshToken) {
+      const token = (
+        await inquirer.prompt({
+          type: "password",
+          name: "token",
+          message: `请输入对应平台的 token 方便后续使用, 如何生成 token 参考 ${terminalLink(
+            "链接",
+            this.gitServer.outputTokenHelp()
+          )}`,
+        })
+      ).token;
+      log.info("token 的查看路径是：", gitServerTokenPath);
+      this.token = token;
+      writeFile(gitServerTokenPath, token);
+    } else {
+      this.token = gitToken;
+      log.info("token 的查看路径是：", gitServerTokenPath);
+    }
+
+    // 向 gitserver 挂载 token
+    this.gitServer.setToken(this.token);
+  }
+
   async prepare(options) {
-    //  1. 检查缓存主目录
     try {
+      //  1. 检查缓存主目录
+
       this.checkHomePath();
+      // 2. gitserver 相关逻辑
       await this.checkGitServer(options);
       this.gitServer = this.createGitServer(this.gitServerString);
+      // 3. token 相关逻辑
+      await this.checkServerToken(options);
     } catch (error) {
       log.error("", error.message);
     }

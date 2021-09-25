@@ -36,6 +36,7 @@
     "inquirer": "^8.1.5",
     "invariant": "^2.2.4",
     "simple-git": "^2.45.1",
+    "terminal-link": "^2.1.1",
     "user-home": "^3.0.0"
   }
 }

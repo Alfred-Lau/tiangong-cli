@@ -18,6 +18,10 @@ class GitServer {
   setToken() {
     invariant(true, "setToken 方法必须在子类中必须有自己的实现");
   }
+
+  outputTokenHelp() {
+    invariant(true, "outputTokenHelp 方法必须在子类中必须有自己的实现");
+  }
 }
 
 module.exports = GitServer;
