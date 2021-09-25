@@ -6,7 +6,7 @@ const userHome = require("user-home");
 const fse = require("fs-extra");
 const inquirer = require("inquirer");
 const log = require("@tiangongkit/log");
-const { readFile, writeFile } = require("@tiangkit/utils");
+const { readFile, writeFile } = require("@tiangongkit/utils");
 
 const DEFAULT_CLI_HOME = ".tg_cli";
 const GIT_SERVER_PATH = ".git";

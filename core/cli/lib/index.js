@@ -100,8 +100,10 @@ function registryCommand() {
     .command("init [name]")
     .option("-f, --force", "是否强制初始化项目")
     .action(exec);
-
-  program.command("publish").action(exec);
+  program
+    .command("publish")
+    .option("-f, --refresh", "强制更新远程git仓库")
+    .action(exec);
 
   // second 设置事件监听
   program.on("option:debug", function () {
