@@ -22,6 +22,8 @@ class Git {
     this.dir = dir;
     this.git = simpleGit(dir);
     this.gitServer = null;
+    this.user = null;
+    this.org = null;
     // 配置选项
     this.refreshServer = refreshServer;
     this.refreshToken = refreshToken;
@@ -101,14 +103,18 @@ class Git {
     log.info("", gitServerTokenPath);
 
     if (!gitToken || this.refreshToken) {
+      log.warn(
+        "",
+        `如何生成 token 参考 ${terminalLink(
+          "链接",
+          this.gitServer.outputTokenHelp()
+        )}`
+      );
       const token = (
         await inquirer.prompt({
           type: "password",
           name: "token",
-          message: `请输入对应平台的 token 方便后续使用, 如何生成 token 参考 ${terminalLink(
-            "链接",
-            this.gitServer.outputTokenHelp()
-          )}`,
+          message: `请输入对应平台的 token 方便后续使用`,
         })
       ).token;
       log.info("token 的查看路径是：", gitServerTokenPath);
@@ -123,6 +129,16 @@ class Git {
     this.gitServer.setToken(this.token);
   }
 
+  async getUserAndOrg() {
+    log.info("", "我开始被调用");
+    try {
+      this.user = await this.gitServer.getUser();
+      this.org = await this.gitServer.getOrg();
+    } catch (error) {
+      log.error("", error.message);
+    }
+  }
+
   async prepare(options) {
     try {
       //  1. 检查缓存主目录
@@ -133,6 +149,8 @@ class Git {
       this.gitServer = this.createGitServer(this.gitServerString);
       // 3. token 相关逻辑
       await this.checkServerToken(options);
+      //  4. 获取用户和组织信息
+      await this.getUserAndOrg();
     } catch (error) {
       log.error("", error.message);
     }

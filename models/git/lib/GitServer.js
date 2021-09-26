@@ -16,11 +16,28 @@ class GitServer {
   }
 
   setToken() {
-    invariant(true, "setToken 方法必须在子类中必须有自己的实现");
+    invariant(false, "setToken 方法必须在子类中必须有自己的实现");
+  }
+
+  /**
+   * 获取用户信息
+   *
+   * @memberof GitServer
+   */
+  async getUser() {
+    invariant(false, "getUser 方法必须在子类中必须有自己的实现");
+  }
+  /**
+   *获取用户所属组织信息
+   *
+   * @memberof GitServer
+   */
+  async getOrg() {
+    invariant(false, "getOrg 方法必须在子类中必须有自己的实现");
   }
 
   outputTokenHelp() {
-    invariant(true, "outputTokenHelp 方法必须在子类中必须有自己的实现");
+    invariant(false, "outputTokenHelp 方法必须在子类中必须有自己的实现");
   }
 }
 
