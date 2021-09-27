@@ -12,6 +12,9 @@ class GithubServer extends Server {
   outputTokenHelp() {
     return "https://gitee.com/";
   }
+
+  async getUser() {}
+  async getOrg() {}
 }
 
 module.exports = GithubServer;

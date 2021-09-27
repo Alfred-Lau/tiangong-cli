@@ -130,10 +130,16 @@ class Git {
   }
 
   async getUserAndOrg() {
-    log.info("", "我开始被调用");
     try {
       this.user = await this.gitServer.getUser();
-      this.org = await this.gitServer.getOrg();
+      if (!this.user) {
+        throw new Error("用户信息获取失败");
+      }
+      const { login: username } = this.user;
+      this.org = await this.gitServer.getOrg(username);
+      if (!this.org) {
+        throw new Error("用户组织信息获取失败");
+      }
     } catch (error) {
       log.error("", error.message);
     }
