@@ -14,7 +14,7 @@ class GiteeServer extends Server {
   }
 
   outputTokenHelp() {
-    return "https://gitee.com/";
+    return "https://gitee.com/profile/personal_access_tokens";
   }
 
   async getUser() {
@@ -26,7 +26,7 @@ class GiteeServer extends Server {
     }
     return user;
   }
-  async getOrg(uesrname) {
+  async getOrg(username) {
     let org;
     try {
       org = await this.request.get(`/users/${username}/orgs`);
