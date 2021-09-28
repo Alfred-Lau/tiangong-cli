@@ -28,7 +28,7 @@ class GithubServer extends Server {
     return user;
   }
 
-  async getOrg(username) {
+  async getOrg() {
     let org;
     try {
       org = await this.request.get(`/user/orgs`);

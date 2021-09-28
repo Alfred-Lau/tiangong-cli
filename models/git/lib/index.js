@@ -145,6 +145,8 @@ class Git {
     }
   }
 
+  async checkGitOwner() {}
+
   async prepare(options) {
     try {
       //  1. 检查缓存主目录
@@ -157,6 +159,8 @@ class Git {
       await this.checkServerToken(options);
       //  4. 获取用户和组织信息
       await this.getUserAndOrg();
+      //  5. 确认用户类型【如果是组织，就需要选择具体组织】
+      await this.checkGitOwner();
     } catch (error) {
       log.error("", error.message);
     }
