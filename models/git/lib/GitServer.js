@@ -36,6 +36,10 @@ class GitServer {
     invariant(false, "getOrg 方法必须在子类中必须有自己的实现");
   }
 
+  async getRepo() {
+    invariant(false, "getRepo 方法必须在子类中必须有自己的实现");
+  }
+
   outputTokenHelp() {
     invariant(false, "outputTokenHelp 方法必须在子类中必须有自己的实现");
   }

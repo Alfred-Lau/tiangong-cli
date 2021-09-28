@@ -145,7 +145,13 @@ class Git {
     }
   }
 
-  async checkGitOwner() {}
+  async checkGitOwner() {
+    // 获取 owner 和 login 登录用户
+  }
+
+  async checkRepo() {
+    let repo = await this.gitServer.getRepo();
+  }
 
   async prepare(options) {
     try {
@@ -159,8 +165,10 @@ class Git {
       await this.checkServerToken(options);
       //  4. 获取用户和组织信息
       await this.getUserAndOrg();
-      //  5. 确认用户类型【如果是组织，就需要选择具体组织】
+      //  5. 确认用户类型【如果是组织，就需要选择具体组织登录用户】
       await this.checkGitOwner();
+      // 6. 检查并创建远程仓库
+      await this.checkRepo();
     } catch (error) {
       log.error("", error.message);
     }

@@ -35,6 +35,8 @@ class GiteeServer extends Server {
     }
     return org;
   }
+
+  async getRepo(login, name) {}
 }
 
 module.exports = GiteeServer;

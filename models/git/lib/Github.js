@@ -37,6 +37,8 @@ class GithubServer extends Server {
     }
     return org;
   }
+
+  async getRepo(login, name) {}
 }
 
 module.exports = GithubServer;

@@ -30,6 +30,16 @@ class GiteeRequest {
       headers,
     });
   }
+
+  post(url, data, headers) {
+    return this.request({
+      url,
+      method: "post",
+      params: { access_token: this.token },
+      headers,
+      data,
+    });
+  }
 }
 
 module.exports = GiteeRequest;
