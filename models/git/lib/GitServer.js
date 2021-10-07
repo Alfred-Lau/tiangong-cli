@@ -19,6 +19,24 @@ class GitServer {
     invariant(false, "setToken 方法必须在子类中必须有自己的实现");
   }
 
+  isHttpResponse(resp) {
+    return resp && resp.status;
+  }
+
+  /**
+   *处理接口返回值
+   *
+   * @param {*} resp
+   * @memberof GitServer
+   */
+  handleResponse(resp) {
+    if (this.isHttpResponse(resp) && resp !== 200) {
+      return null;
+    } else {
+      return resp;
+    }
+  }
+
   /**
    * 获取用户信息
    *

@@ -23,6 +23,10 @@ class GiteeRequest {
   }
 
   get(url, params, headers) {
+    console.log("我们的请求参数是", url, {
+      ...params,
+      access_token: this.token,
+    });
     return this.request({
       url,
       params: { ...params, access_token: this.token },

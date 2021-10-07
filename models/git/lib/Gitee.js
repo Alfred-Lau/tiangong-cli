@@ -37,7 +37,19 @@ class GiteeServer extends Server {
     return org;
   }
 
-  async getRepo(login, name) {}
+  /**
+   *获取仓库信息
+   *
+   * @param {*} login
+   * @param {*} name
+   * @memberof GiteeServer
+   */
+  async getRepo(login, name) {
+    return this.request
+      .get(`/repos/${login}/${name}`)
+      .then((resp) => this.handleResponse(resp))
+      .catch((error) => log.error("", error.message));
+  }
 }
 
 module.exports = GiteeServer;

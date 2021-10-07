@@ -223,8 +223,14 @@ class Git {
     this.login = login;
   }
 
+  /**
+   *创建和获取远程仓库
+   *
+   * @memberof Git
+   */
   async checkRepo() {
-    let repo = await this.gitServer.getRepo();
+    let repo = await this.gitServer.getRepo(this.login, this.name);
+    log.info("", repo);
   }
 
   async prepare(options) {
