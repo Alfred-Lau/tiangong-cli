@@ -40,6 +40,7 @@ class PublishCommand extends Command {
     this.options = {
       refreshServer: this._options.refreshServer || false,
       refreshToken: this._options.refreshToken || false,
+      refreshOwner: this._options.refreshOwner || false,
     };
     // this.publishOpts = this._options;
   }

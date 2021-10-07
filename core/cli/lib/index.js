@@ -103,7 +103,8 @@ function registryCommand() {
   program
     .command("publish")
     .option("-f, --refreshServer", "强制更新远程git仓库")
-    .option("-f, --refreshToken", "强制更新git平台token")
+    .option("-t, --refreshToken", "强制更新git平台token")
+    .option("-o, --refreshOwner", "强制更新git平台账户类型")
     .action(exec);
 
   // second 设置事件监听

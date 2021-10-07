@@ -39,7 +39,10 @@ const GIT_OWNER_TYPE_ONLY = [
 ];
 
 class Git {
-  constructor({ name, version, dir }, { refreshServer, refreshToken }) {
+  constructor(
+    { name, version, dir },
+    { refreshServer, refreshToken, refreshOwner }
+  ) {
     this.name = name;
     this.version = version;
     this.dir = dir;
@@ -49,9 +52,11 @@ class Git {
     this.orgs = null;
     this.owner = null; // 远程仓库类型
     this.login = null; //远程仓库登录名
+    this.repo = null; // 远程仓库
     // 配置选项
     this.refreshServer = refreshServer;
     this.refreshToken = refreshToken;
+    this.refreshOwner = refreshOwner;
   }
   checkHomePath() {
     if (!this.homePath) {
@@ -230,7 +235,14 @@ class Git {
    */
   async checkRepo() {
     let repo = await this.gitServer.getRepo(this.login, this.name);
-    log.info("", repo);
+
+    if (!repo) {
+      // repo 远程项目不存在，开始创建项目
+    } else {
+      log.success("远程仓库信息获取成功");
+    }
+    log.verbose("", repo);
+    this.repo = repo;
   }
 
   async prepare(options) {
