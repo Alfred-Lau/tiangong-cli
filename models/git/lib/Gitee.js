@@ -50,6 +50,26 @@ class GiteeServer extends Server {
       .then((resp) => this.handleResponse(resp))
       .catch((error) => log.error("", error.message));
   }
+
+  /**
+   *创建个人项目
+   *
+   * @param {*} name
+   * @memberof GiteeServer
+   */
+  async createRepo(name) {
+    return this.request.post(`/user/repos`, { name });
+  }
+  /**
+   *创建组织内项目
+   *
+   * @param {*} name
+   * @param {*} login
+   * @memberof GiteeServer
+   */
+  async createOrgRepo(name, login) {
+    return this.request.post(`/orgs/${login}/repos`, { name });
+  }
 }
 
 module.exports = GiteeServer;

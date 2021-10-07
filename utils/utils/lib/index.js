@@ -26,6 +26,21 @@ function isObject(o) {
   return Object.prototype.toString.call(o) === "[object Object]";
 }
 
+/**
+ *导出转圈函数
+ *
+ * @param {*} msg
+ * @param {string} [spainnerString="|/-\\"]
+ * @return {*}
+ */
+function spinnerStart(msg, spainnerString = "|/-\\") {
+  const Spinner = require("cli-spinner").Spinner;
+  const spinner = new Spinner(msg + " %s");
+  spinner.setSpinnerString(spainnerString);
+  spinner.start();
+  return spinner;
+}
+
 // 把一个同步函数改造成异步的方式，就是返回一个 promise ，然后await 它
 function execute(params) {
   return new Promise(function (resolve, reject) {
@@ -66,4 +81,5 @@ module.exports = {
   execute,
   readFile,
   writeFile,
+  spinnerStart,
 };

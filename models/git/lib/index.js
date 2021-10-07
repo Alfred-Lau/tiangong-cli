@@ -7,7 +7,7 @@ const fse = require("fs-extra");
 const inquirer = require("inquirer");
 const terminalLink = require("terminal-link");
 const log = require("@tiangongkit/log");
-const { readFile, writeFile } = require("@tiangongkit/utils");
+const { readFile, writeFile, spinnerStart } = require("@tiangongkit/utils");
 const GithubServer = require("./Github");
 const GiteeServer = require("./Gitee");
 
@@ -238,12 +238,39 @@ class Git {
 
     if (!repo) {
       // repo 远程项目不存在，开始创建项目
+      const spinner = spinnerStart("开始创建远程仓库");
+
+      try {
+        if (this.owner === REPO_OWNER_USER) {
+          // 创建个人项目
+          repo = await this.gitServer.createRepo(this.name);
+        } else {
+          // 创建组织内项目
+          this.gitServer.createOrgRepo(this.name, this.login);
+        }
+      } catch (error) {
+        log.error(error);
+        throw new Error("远程仓库创建失败");
+      } finally {
+        spinner.stop(true);
+      }
+
+      if (repo) {
+        log.success("远程仓库创建成功");
+      }
     } else {
       log.success("远程仓库信息获取成功");
     }
     log.verbose("", repo);
     this.repo = repo;
   }
+
+  /**
+   *检查创建 gitignore 文件
+   *
+   * @memberof Git
+   */
+  checkAndCreateGitIgnoreFile() {}
 
   async prepare(options) {
     try {
@@ -261,6 +288,8 @@ class Git {
       await this.checkGitOwner();
       // 6. 检查并创建远程仓库
       await this.checkRepo();
+      // 7. 检查并创建 gitignore 文件
+      this.checkAndCreateGitIgnoreFile();
     } catch (error) {
       log.error("", error.message);
     }

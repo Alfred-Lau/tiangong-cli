@@ -38,6 +38,13 @@ class GithubServer extends Server {
     return org;
   }
 
+  /**
+   *TODO:
+   *
+   * @param {*} login
+   * @param {*} name
+   * @memberof GithubServer
+   */
   async getRepo(login, name) {}
 }
 
