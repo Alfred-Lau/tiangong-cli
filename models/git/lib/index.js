@@ -15,6 +15,29 @@ const DEFAULT_CLI_HOME = ".tg_cli";
 const GIT_SERVER_PATH = ".git";
 const GIT_SERVER_FILE = ".git_server";
 const GIT_TOKEN_FILE = ".git_token";
+const GIT_OWN_FILE = ".git_own";
+const GIT_LOGIN_FILE = ".git_login";
+const REPO_OWNER_USER = "user";
+const REPO_OWNER_ORG = "org";
+
+const GIT_OWNER_TYPE = [
+  {
+    name: "个人",
+    value: REPO_OWNER_USER,
+  },
+  {
+    name: "组织",
+    value: REPO_OWNER_ORG,
+  },
+];
+
+const GIT_OWNER_TYPE_ONLY = [
+  {
+    name: "个人",
+    value: REPO_OWNER_USER,
+  },
+];
+
 class Git {
   constructor({ name, version, dir }, { refreshServer, refreshToken }) {
     this.name = name;
@@ -23,7 +46,9 @@ class Git {
     this.git = simpleGit(dir);
     this.gitServer = null;
     this.user = null;
-    this.org = null;
+    this.orgs = null;
+    this.owner = null; // 远程仓库类型
+    this.login = null; //远程仓库登录名
     // 配置选项
     this.refreshServer = refreshServer;
     this.refreshToken = refreshToken;
@@ -129,6 +154,11 @@ class Git {
     this.gitServer.setToken(this.token);
   }
 
+  /**
+   *查询用户和组织信息
+   *
+   * @memberof Git
+   */
   async getUserAndOrg() {
     try {
       this.user = await this.gitServer.getUser();
@@ -136,8 +166,8 @@ class Git {
         throw new Error("用户信息获取失败");
       }
       const { login: username } = this.user;
-      this.org = await this.gitServer.getOrg(username);
-      if (!this.org) {
+      this.orgs = await this.gitServer.getOrg(username);
+      if (!this.orgs) {
         throw new Error("用户组织信息获取失败");
       }
     } catch (error) {
@@ -145,8 +175,52 @@ class Git {
     }
   }
 
+  /**
+   *查询登录角色和登录用户
+   *
+   * @memberof Git
+   */
   async checkGitOwner() {
     // 获取 owner 和 login 登录用户
+    const ownerPath = this.createPath(GIT_OWN_FILE);
+    const loginPath = this.createPath(GIT_LOGIN_FILE);
+    let owner = readFile(ownerPath);
+    let login = readFile(loginPath);
+    if (!owner || !login || this.refreshOwner) {
+      owner = (
+        await inquirer.prompt({
+          type: "list",
+          name: "owner",
+          message: "请选择远程仓库类型",
+          default: REPO_OWNER_USER,
+          choices: this.orgs.length > 0 ? GIT_OWNER_TYPE : GIT_OWNER_TYPE_ONLY,
+        })
+      ).owner;
+      if (owner === REPO_OWNER_USER) {
+        login = this.user.login;
+      } else {
+        login = (
+          await inquirer.prompt({
+            type: "list",
+            name: "login",
+            message: "请选择",
+            choices: this.orgs.map((item) => ({
+              name: item.login,
+              value: item.login,
+            })),
+          })
+        ).login;
+      }
+      writeFile(ownerPath, owner);
+      writeFile(loginPath, login);
+      log.success("owner写入成功", `${owner} -> ${ownerPath}`);
+      log.success("login写入成功", `${login} -> ${loginPath}`);
+    } else {
+      log.success("owner获取成功", owner);
+      log.success("login获取成功", login);
+    }
+    this.owner = owner;
+    this.login = login;
   }
 
   async checkRepo() {

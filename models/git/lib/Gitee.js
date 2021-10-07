@@ -26,6 +26,7 @@ class GiteeServer extends Server {
     }
     return user;
   }
+
   async getOrg(username) {
     let org;
     try {
