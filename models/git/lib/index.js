@@ -17,6 +17,7 @@ const GIT_SERVER_FILE = ".git_server";
 const GIT_TOKEN_FILE = ".git_token";
 const GIT_OWN_FILE = ".git_own";
 const GIT_LOGIN_FILE = ".git_login";
+const GIT_IGNORE_FILE = ".gitignore";
 const REPO_OWNER_USER = "user";
 const REPO_OWNER_ORG = "org";
 
@@ -266,11 +267,44 @@ class Git {
   }
 
   /**
-   *检查创建 gitignore 文件
+   *检查并创建 gitignore 文件
    *
    * @memberof Git
    */
-  checkAndCreateGitIgnoreFile() {}
+  checkAndCreateGitIgnoreFile() {
+    const gitIgnoreFile = path.resolve(this.dir, GIT_IGNORE_FILE);
+    if (!fse.existsSync(gitIgnoreFile)) {
+      writeFile(
+        gitIgnoreFile,
+        `
+      .DS_Store
+node_modules
+/dist
+
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+      `
+      );
+      log.success(`自动写入 ${gitIgnoreFile} 成功`);
+    }
+  }
 
   async prepare(options) {
     try {
