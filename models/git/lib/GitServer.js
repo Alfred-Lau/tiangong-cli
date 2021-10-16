@@ -61,6 +61,10 @@ class GitServer {
   outputTokenHelp() {
     invariant(false, "outputTokenHelp 方法必须在子类中必须有自己的实现");
   }
+
+  getRemote() {
+    invariant(false, "getRemote 方法必须在子类中必须有自己的实现");
+  }
 }
 
 module.exports = GitServer;

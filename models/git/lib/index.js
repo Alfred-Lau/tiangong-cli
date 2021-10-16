@@ -277,7 +277,7 @@ class Git {
       writeFile(
         gitIgnoreFile,
         `
-      .DS_Store
+.DS_Store
 node_modules
 /dist
 
@@ -321,16 +321,57 @@ pnpm-debug.log*
       //  5. 确认用户类型【如果是组织，就需要选择具体组织登录用户】
       await this.checkGitOwner();
       // 6. 检查并创建远程仓库
-      await this.checkRepo();
+      // await this.checkRepo();
       // 7. 检查并创建 gitignore 文件
       this.checkAndCreateGitIgnoreFile();
+      // 8. 开始本地仓库的初始化
     } catch (error) {
       log.error("", error.message);
     }
   }
 
-  async init(options) {
-    await this.prepare(options);
+  async initAndAddRemoteAddress() {
+    log.info("", "执行 git 初始化");
+    await this.git.init(this.dir);
+    log.info("添加git remote");
+    const remotes = await this.git.getRemotes();
+    log.verbose("git remotes", remotes);
+    if (!remotes.find((item) => item.name === "origin")) {
+      await this.git.addRemote("origin", this.remote);
+    }
   }
+
+  getRemote() {
+    const gitPath = path.resolve(this.dir, GIT_SERVER_PATH);
+    this.remote = this.gitServer.getRemote(this.login, this.name);
+    if (fs.existsSync(gitPath)) {
+      log.success("git已完成初始化");
+      return true;
+    }
+  }
+
+  /**
+   *创建git项目初始化和远程仓库
+   *
+   * @param {*} options
+   * @return {*}
+   * @memberof Git
+   */
+  async init(options) {
+    // 1. 准备工作
+    await this.prepare(options);
+    // 2. 初始化仓库并添加远程仓库地址
+    if (await this.getRemote()) {
+      return;
+    }
+    await this.initAndAddRemoteAddress();
+  }
+
+  /**
+   *创建初始化提交
+   *
+   * @memberof Git
+   */
+  async commit({}) {}
 }
 module.exports = Git;

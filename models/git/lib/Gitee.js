@@ -70,6 +70,10 @@ class GiteeServer extends Server {
   async createOrgRepo(name, login) {
     return this.request.post(`/orgs/${login}/repos`, { name });
   }
+
+  getRemote(login, name) {
+    return `git@gitee.com:${login}/${name}.git`;
+  }
 }
 
 module.exports = GiteeServer;

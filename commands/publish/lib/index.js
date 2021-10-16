@@ -51,7 +51,10 @@ class PublishCommand extends Command {
       this.prepare();
       // 2. gitflow 预检查
       const git = new Git(this.projectInfo, this.options);
+      // 2.1 初始化项目
       await git.init({ rewrite: this.refreshServer });
+      // 2.2 初始化提交
+      await git.commit({});
       // 3. 云构建
       const endTime = new Date().getTime();
       log.info("", `本次发布耗时：${(endTime - startTime) / 1000} s`);
