@@ -1,6 +1,6 @@
 {
   "name": "@tiangongkit/package",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "package instance",
   "keywords": [
     "package"
@@ -24,10 +24,10 @@
     "url": "git+https://github.com/Alfred-Lau/tiangong-cli.git"
   },
   "dependencies": {
-    "@tiangongkit/format-path": "^0.0.16",
-    "@tiangongkit/get-npm-info": "^0.0.16",
-    "@tiangongkit/log": "^0.0.16",
-    "@tiangongkit/utils": "^0.0.16",
+    "@tiangongkit/format-path": "^0.0.17",
+    "@tiangongkit/get-npm-info": "^0.0.17",
+    "@tiangongkit/log": "^0.0.17",
+    "@tiangongkit/utils": "^0.0.17",
     "fs-extra": "^7.0.1",
     "npminstall": "^4.10.0",
     "path-exists": "^5.0.0",
