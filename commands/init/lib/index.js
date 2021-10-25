@@ -168,9 +168,10 @@ class InitCommand extends Command {
    * @memberof InitCommand
    */
   async getProjectTemplates() {
-    const templates = await request({
+    const { list: templates } = await request({
       url: "/api/cli/template/list",
     });
+
     if (!templates || templates.length === 0) {
       throw new Error("项目模板不存在");
     }
