@@ -1,10 +1,5 @@
 {
-  "packages": [
-    "core/*",
-    "commands/*",
-    "models/*",
-    "utils/*",
-    "shared/*"
-  ],
-  "version": "0.0.18"
+  "packages": ["core/*", "commands/*", "models/*", "utils/*", "shared/*"],
+  "version": "0.0.18",
+  "npmClient": "yarn"
 }
