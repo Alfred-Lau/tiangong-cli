@@ -1,6 +1,6 @@
 {
   "name": "@tiangongkit/publish",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "publish command",
   "keywords": [
     "publish"
@@ -19,7 +19,7 @@
   "dependencies": {
     "@tiangongkit/command": "file:../../models/command",
     "@tiangongkit/git": "file:../../models/git",
-    "@tiangongkit/log": "^0.0.18",
+    "@tiangongkit/log": "^0.0.19",
     "pkg-dir": "^5.0.0"
   },
   "publishConfig": {
