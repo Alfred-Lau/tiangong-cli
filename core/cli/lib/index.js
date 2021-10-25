@@ -93,6 +93,7 @@ function registryCommand() {
     .usage("<command> [option]")
     .version(pkg.version)
     .option("-d, --debug", "是否开启调试模式", false)
+    .option("-u, --update", "检查更新", false)
     .option("-tp, --targetPath <targetPath>", "设置目标调试路径", "");
 
   // third 正式开始注册事件
@@ -132,7 +133,6 @@ function registryCommand() {
   program.on("command:*", function (unknownCommand) {
     const availableCommands = program.commands.map((cmd) => cmd.name());
     log.warn(colors.red(`${unknownCommand} 命令不存在`));
-    program.outputHelp();
     if (availableCommands.length) {
       console.log(
         colors.yellow(`可用的命令有: ${availableCommands.join(",")}`)
@@ -142,6 +142,11 @@ function registryCommand() {
 
   // last
   program.parse(process.argv);
+
+  if (program.args && program.args.length < 1) {
+    program.outputHelp();
+    console.log();
+  }
 }
 
 async function prepare() {
@@ -149,7 +154,9 @@ async function prepare() {
   checkRoot();
   checkUserHome();
   checkDefaultEnv();
-  await checkGlobalUpdate();
+  // 并不需要每次都检查远程版本
+
+  // await checkGlobalUpdate();
 }
 
 async function cli(argv) {
@@ -163,14 +170,14 @@ async function cli(argv) {
   }
 }
 
-// process.on("unhandledRejection", (reason, p) => {
-//   // 我刚刚捕获了一个未处理的promise rejection, 因为我们已经有了对于未处理错误的后备的处理机制（见下面）, 直接抛出，让它来处理
-//   console.log("unhandledRejection", reason, p);
-//   throw reason;
-// });
+process.on("unhandledRejection", (reason, p) => {
+  // 我刚刚捕获了一个未处理的promise rejection, 因为我们已经有了对于未处理错误的后备的处理机制（见下面）, 直接抛出，让它来处理
+  console.log("unhandledRejection", reason, p);
+  throw reason;
+});
 
-// process.on("uncaughtException", (error) => {
-//   // 我刚收到一个从未被处理的错误，现在处理它，并决定是否需要重启应用
-//   console.log("uncaughtException", error);
-//   process.exit(1);
-// });
+process.on("uncaughtException", (error) => {
+  // 我刚收到一个从未被处理的错误，现在处理它，并决定是否需要重启应用
+  console.log("uncaughtException", error);
+  process.exit(1);
+});
