@@ -1,6 +1,6 @@
 {
   "name": "@tiangongkit/utils",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "utils",
   "keywords": [
     "utils"
@@ -20,7 +20,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@tiangongkit/log": "^0.0.19",
+    "@tiangongkit/log": "^0.0.20",
     "cli-spinner": "^0.2.10",
     "fs-extra": "^10.0.0"
   },
