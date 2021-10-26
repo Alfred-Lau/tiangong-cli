@@ -40,8 +40,8 @@ async function getNpmInfo(name, registry) {
 
 function getDefaultRegistry(isOrigin = true) {
   return isOrigin
-    ? "http://registry.npmjs.org/"
-    : "http://registry.npm.taobao.org/";
+    ? "https://registry.npmjs.org/"
+    : "https://registry.npm.taobao.org/";
 }
 
 /**
@@ -83,7 +83,19 @@ async function getNpmLatestVersion(npmName) {
   try {
     const info = await getNpmInfo(npmName);
     if (info) {
-      return Object.keys(info.versions).sort((a, b) => semver.gt(b, a))[0];
+      return Object.keys(info.versions).sort((a, b) => {
+        if (semver.gt(a, b)) {
+          // 按某种排序标准进行比较, a 小于 b
+          return -1;
+        }
+        if (semver.lt(a, b)) {
+          return 1;
+        }
+        // a must be equal to b
+        return 0;
+      })[0];
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+  }
 }
