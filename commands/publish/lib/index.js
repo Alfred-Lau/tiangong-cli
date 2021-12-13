@@ -1,6 +1,7 @@
 "use strict";
 const log = require("@tiangongkit/log");
 const Command = require("@tiangongkit/command");
+const cloudBuild = require("@tiangongkit/cloudbuild");
 const pkgDir = require("pkg-dir").sync;
 const path = require("path");
 const fs = require("fs");
@@ -56,6 +57,11 @@ class PublishCommand extends Command {
       // 2.2 初始化提交
       await git.commit({});
       // 3. 云构建
+      const buildProcess = new cloudBuild({
+        name: this.projectInfo,
+      });
+
+      buildProcess.sendMessage("我来发送一条封装的信息");
       const endTime = new Date().getTime();
       log.info("", `本次发布耗时：${(endTime - startTime) / 1000} s`);
     } catch (e) {

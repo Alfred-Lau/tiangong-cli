@@ -341,10 +341,10 @@ pnpm-debug.log*
     }
   }
 
-  getRemote() {
+  async getRemote() {
     const gitPath = path.resolve(this.dir, GIT_SERVER_PATH);
     this.remote = this.gitServer.getRemote(this.login, this.name);
-    if (fs.existsSync(gitPath)) {
+    if (fse.pathExists(gitPath)) {
       log.success("git已完成初始化");
       return true;
     }
@@ -362,9 +362,10 @@ pnpm-debug.log*
     await this.prepare(options);
     // 2. 初始化仓库并添加远程仓库地址
     if (await this.getRemote()) {
-      return;
+      // return;
     }
     await this.initAndAddRemoteAddress();
+    //
   }
 
   /**
@@ -372,6 +373,8 @@ pnpm-debug.log*
    *
    * @memberof Git
    */
-  async commit({}) {}
+  async commit({}) {
+    log.info("", "模拟提交commit");
+  }
 }
 module.exports = Git;

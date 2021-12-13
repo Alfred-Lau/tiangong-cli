@@ -1,12 +1,13 @@
 {
-  "name": "@tiangongkit/publish",
+  "name": "@tiangongkit/cloudbuild",
   "version": "0.0.20",
-  "description": "publish command",
+  "description": "base class for cloud build and serve the socket and oss ability",
   "keywords": [
-    "publish"
+    "cloud",
+    "build"
   ],
   "author": "Alfred-Lau <jian.liu@icloud.com>",
-  "homepage": "https://github.com/Alfred-Lau/tiangong-cli/tree/master/commands/publish#readme",
+  "homepage": "https://github.com/Alfred-Lau/tiangong-cli/tree/master/core/cloudBuild#readme",
   "license": "ISC",
   "main": "lib/index.js",
   "directories": {
@@ -17,14 +18,10 @@
     "lib"
   ],
   "dependencies": {
-    "@tiangongkit/command": "file:../../models/command",
-    "@tiangongkit/cloudbuild":"file:../../models/cloudbuild",
-    "@tiangongkit/git": "file:../../models/git",
-    "@tiangongkit/log": "^0.0.20",
-    "pkg-dir": "^5.0.0"
+    "socket.io-client": "^2.4.0"
   },
   "publishConfig": {
-    "access": "public"
+    "registry": "https://registry.npmmirror.com/"
   },
   "repository": {
     "type": "git",
