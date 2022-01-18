@@ -13,6 +13,7 @@ class GiteeRequest {
     this.request.interceptors.response.use(
       (resp) => resp.data,
       (err) => {
+        console.log("errerrerr", err);
         if (err.response && err.response.data) {
           return err.response;
         } else {
@@ -23,10 +24,6 @@ class GiteeRequest {
   }
 
   get(url, params, headers) {
-    console.log("我们的请求参数是", url, {
-      ...params,
-      access_token: this.token,
-    });
     return this.request({
       url,
       params: { ...params, access_token: this.token },

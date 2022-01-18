@@ -262,7 +262,6 @@ class Git {
     } else {
       log.success("远程仓库信息获取成功");
     }
-    log.verbose("", repo);
     this.repo = repo;
   }
 
@@ -321,23 +320,30 @@ pnpm-debug.log*
       //  5. 确认用户类型【如果是组织，就需要选择具体组织登录用户】
       await this.checkGitOwner();
       // 6. 检查并创建远程仓库
-      // await this.checkRepo();
+      await this.checkRepo();
       // 7. 检查并创建 gitignore 文件
       this.checkAndCreateGitIgnoreFile();
       // 8. 开始本地仓库的初始化
+      // 9. 初始化仓库并添加远程仓库地址
+      if (await this.getRemote()) {
+        // return;
+      }
+      await this.initAndAddRemoteAddress();
     } catch (error) {
       log.error("", error.message);
     }
   }
 
   async initAndAddRemoteAddress() {
-    log.info("", "执行 git 初始化");
+    log.info("", "1. 执行 git 初始化");
     await this.git.init(this.dir);
-    log.info("添加git remote");
+    log.info("", "2. 添加git remote");
     const remotes = await this.git.getRemotes();
-    log.verbose("git remotes", remotes);
+    log.verbose("git remotes", remotes.toString());
     if (!remotes.find((item) => item.name === "origin")) {
       await this.git.addRemote("origin", this.remote);
+    } else {
+      log.info("", "远程分支存在");
     }
   }
 
@@ -360,11 +366,7 @@ pnpm-debug.log*
   async init(options) {
     // 1. 准备工作
     await this.prepare(options);
-    // 2. 初始化仓库并添加远程仓库地址
-    if (await this.getRemote()) {
-      // return;
-    }
-    await this.initAndAddRemoteAddress();
+
     //
   }
 

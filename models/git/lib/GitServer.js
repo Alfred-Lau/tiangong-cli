@@ -30,7 +30,7 @@ class GitServer {
    * @memberof GitServer
    */
   handleResponse(resp) {
-    if (this.isHttpResponse(resp) && resp !== 200) {
+    if (!this.isHttpResponse(resp)) {
       return null;
     } else {
       return resp;
