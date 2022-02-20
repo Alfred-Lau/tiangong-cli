@@ -64,7 +64,7 @@ class PublishCommand extends Command {
       buildProcess.sendMessage("我来发送一条封装的信息");
       const endTime = new Date().getTime();
       log.info("", `本次发布耗时：${(endTime - startTime) / 1000} s`);
-      process.exit(0);
+      // process.exit(0);
     } catch (e) {
       log.error(e.message);
     }

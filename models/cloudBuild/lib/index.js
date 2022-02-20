@@ -26,6 +26,7 @@ class CloudBuild {
   }
 
   sendMessage(msg) {
+    console.log(msg);
     this.socket.emit("chat", msg);
   }
 
