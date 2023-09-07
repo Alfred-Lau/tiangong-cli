@@ -7,7 +7,7 @@
   "license": "ISC",
   "main": "lib/cli.js",
   "bin": {
-    "tg-cli": "bin/index.js"
+    "bitou": "bin/index.js"
   },
   "directories": {
     "lib": "lib",

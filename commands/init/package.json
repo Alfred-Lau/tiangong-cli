@@ -1,7 +1,7 @@
 {
   "name": "@tiangongkit/init",
   "version": "0.0.20",
-  "description": "tg-cli init command",
+  "description": "bitou init command",
   "keywords": [
     "command",
     "init"

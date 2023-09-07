@@ -328,6 +328,7 @@ pnpm-debug.log*
       if (await this.getRemote()) {
         // return;
       }
+      // 添加远程仓库地址
       await this.initAndAddRemoteAddress();
     } catch (error) {
       log.error("", error.message);
